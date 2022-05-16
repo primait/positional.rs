@@ -1,0 +1,6 @@
+[workspace]
+
+members = [
+    "positional",
+    "positional_derive",
+]
