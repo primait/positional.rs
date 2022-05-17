@@ -1,12 +1,13 @@
 use positional::*;
+use positional_derive::PositionalRow;
 
 #[derive(PositionalRow)]
 struct Data {
-    #[positional(size = 5, filler = " ", alignment: LEFT)]
+    #[positional(size = 5, filler = ' ', align = "left")]
     id: String,
-    #[positional(size = 20, filler = " ", alignment: LEFT)]
+    #[positional(size = 20, filler = ' ', align = "left")]
     value: String,
-    #[positional(size = 10, filler = "0", alignment: RIGHT)]
+    #[positional(size = 10, filler = '0', align = "right")]
     count: i32,
 }
 
@@ -18,4 +19,8 @@ pub fn main() {
     };
 
     println!("{}", data.to_positional_row());
+    assert_eq!(
+        "1    test value          0000000010",
+        data.to_positional_row()
+    );
 }
