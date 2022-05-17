@@ -1,5 +1,5 @@
 use proc_macro::TokenStream;
-use quote::{format_ident, quote, ToTokens, TokenStreamExt};
+use quote::quote;
 use std::str::FromStr;
 use syn::{parse_macro_input, Data, DeriveInput, Fields, Lit, Meta, NestedMeta, Path};
 
@@ -23,12 +23,12 @@ pub fn positional_row(tokens: TokenStream) -> TokenStream {
                                 let mut attrs = vec![];
                                 parse_meta(&mut attrs, meta);
                                 let row_attributes = create_row_attributes(attrs);
-                                let size = row_attributes.size.to_string();
+                                let size = row_attributes.size;
                                 let filler = row_attributes.filler;
+                                let align = row_attributes.align == FieldAlignment::Left;
                                 let output = quote! {
-                                    PositionalField::new(&self.#field_ident, #size, #filler)
+                                    PositionalField::new(self.#field_ident.to_string(), #size, #filler, #align)
                                 };
-                                dbg!(&output);
                                 all_fields.push(output);
                             }
                         }
@@ -48,7 +48,7 @@ pub fn positional_row(tokens: TokenStream) -> TokenStream {
         impl PositionalRow for #type_name {
             fn to_positional_row(&self) -> String {
                 let out = vec![#(#all_fields),*];
-                out.join("")
+                out.iter().map(|positional_field| positional_field.to_string()).collect::<Vec<String>>().join("")
             }
         }
     }
@@ -70,6 +70,7 @@ fn parse_meta(attrs: &mut Vec<(Path, Lit)>, meta: Meta) {
     }
 }
 
+#[derive(PartialEq)]
 enum FieldAlignment {
     Left,
     Right,

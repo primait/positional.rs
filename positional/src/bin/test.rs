@@ -7,7 +7,7 @@ struct Data {
     id: String,
     #[positional(size = 20, filler = ' ', align = "left")]
     value: String,
-    #[positional(size = 10, filler = '0', align = "right")]
+    #[positional(size = 5, filler = '0', align = "right")]
     count: i32,
 }
 
@@ -15,12 +15,9 @@ pub fn main() {
     let data = Data {
         id: "1".to_string(),
         value: "test value".to_string(),
-        count: 10,
+        count: 1_000_000,
     };
 
     println!("{}", data.to_positional_row());
-    assert_eq!(
-        "1    test value          0000000010",
-        data.to_positional_row()
-    );
+    assert_eq!("1    test value          10000", data.to_positional_row());
 }

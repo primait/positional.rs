@@ -1,7 +1,5 @@
 pub use positional_derive::PositionalRow;
-
-use proc_macro2::{Ident, Literal, Punct, Span, TokenStream};
-use quote::{ToTokens, TokenStreamExt};
+use std::iter;
 
 pub trait PositionalRow {
     fn to_positional_row(&self) -> String;
@@ -19,25 +17,46 @@ impl<T: PositionalRow> PositionalFile<T> {
     }
 }
 
-pub struct PositionalField<T> {
+pub struct PositionalField<T: ToString> {
     value: T,
-    size: String,
+    size: usize,
     filler: char,
+    align_left: bool,
 }
 
-impl<T> PositionalField<T> {
-    pub fn new(value: T, size: usize, filler: char) -> Self {
+impl<T: ToString> PositionalField<T> {
+    pub fn new(value: T, size: usize, filler: char, align_left: bool) -> Self {
         Self {
             value,
-            size: size.to_string(),
+            size,
             filler,
+            align_left,
         }
     }
 }
 
-impl<P: ToString> ToTokens for PositionalField<P> {
-    fn to_tokens(&self, tokens: &mut TokenStream) {
-        let value = Ident::new(&self.value.to_string(), Span::call_site());
-        tokens.append(value);
+impl<T: ToString> ToString for PositionalField<T> {
+    fn to_string(&self) -> String {
+        let value_size = self.value.to_string().len();
+        let fill = if value_size >= self.size {
+            "".to_string()
+        } else {
+            iter::repeat(self.filler)
+                .take(&self.size - value_size)
+                .collect()
+        };
+        let value_as_string = if value_size >= self.size {
+            let mut v = self.value.to_string();
+            v.truncate(self.size);
+            v
+        } else {
+            self.value.to_string()
+        };
+
+        if self.align_left {
+            format!("{}{}", value_as_string, fill)
+        } else {
+            format!("{}{}", fill, value_as_string)
+        }
     }
 }
