@@ -3,7 +3,7 @@ use std::fmt::{Display, Formatter};
 use std::num::ParseIntError;
 use std::str::FromStr;
 
-#[derive(PositionalRow)]
+#[derive(ToPositionalRow)]
 struct Data {
     #[field(size = 5)]
     name: SubData,
@@ -45,9 +45,9 @@ impl Data {
 #[test]
 fn test_simple_positional_file() {
     let rows = vec![Data::new(1, 10, "the address is this")];
-    let positional_file: PositionalFile<Data> = PositionalFile::new(rows);
+    let positional_file: Writer<Data> = Writer::new(rows);
     assert_eq!(
         "1    10---the address is this ",
-        positional_file.to_positional_file()
+        positional_file.to_string()
     );
 }

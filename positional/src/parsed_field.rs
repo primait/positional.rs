@@ -18,6 +18,8 @@ impl PositionalParsedField {
         }
     }
 
+    /// output a string representation of the parsed value
+    /// trimming is done by the library based on the declared positional row configurations
     pub fn to_value(&self) -> String {
         let slice_start = self.offset;
         let slice_end = self.offset + self.size - 1;

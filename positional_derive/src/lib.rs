@@ -106,7 +106,7 @@ fn create_from_positional(
 ) -> Result<proc_macro2::TokenStream, proc_macro2::TokenStream> {
     parse_fields_into_struct_builder_stream(fields).map(|fields| {
         quote! {
-            fn from_positional_row(row: impl ToString) -> Result<Self, Box<dyn std::error::Error>> where Self: Sized {
+            fn parse(row: impl ToString) -> Result<Self, Box<dyn std::error::Error>> where Self: Sized {
                 let row_string = row.to_string();
                 Ok(Self {
                     #(#fields),*

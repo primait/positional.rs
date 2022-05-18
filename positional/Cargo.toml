@@ -6,9 +6,11 @@ edition = "2021"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-positional_derive = { path = "../positional_derive" }
+positional_derive = { version = "0.1", path = "../positional_derive" }
 quote = "1.0"
 proc-macro2 = "1.0.39"
+thiserror = "1.0.31"
+itertools = "0.10.3"
 
 [dev-dependencies]
 chrono = "0.4.19"

@@ -1,6 +1,6 @@
 use positional::*;
 
-#[derive(PositionalRow, PartialEq, Debug)]
+#[derive(ToPositionalRow, FromPositionalRow, PartialEq, Debug)]
 struct Data {
     #[field(size = 5)]
     name: String,
@@ -22,7 +22,7 @@ impl Data {
 
 #[test]
 fn test_parse_single_row() {
-    let row = PositionalRow::from_positional_row("1    ---10the address is this ")
+    let row = FromPositionalRow::parse("1    ---10the address is this ")
         .expect("error converting from positional row");
     assert_eq!(Data::new(1, 10, "the address is this"), row);
 }
@@ -32,6 +32,6 @@ fn test_serialize_and_deserialize() {
     let data = Data::new(1, 100, "the address is this");
     let row = data.to_positional_row();
     let original_data: Data =
-        PositionalRow::from_positional_row(row).expect("error converting from positional row");
+        FromPositionalRow::parse(row).expect("error converting from positional row");
     assert_eq!(original_data, data);
 }

@@ -6,7 +6,7 @@ pub trait ToPositionalRow {
 }
 
 pub trait FromPositionalRow {
-    fn from_positional_row(row: impl ToString) -> Result<Self, Box<dyn Error>>
+    fn parse(row: impl ToString) -> Result<Self, Box<dyn Error>>
     where
         Self: Sized;
 }
