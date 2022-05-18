@@ -6,13 +6,13 @@ use syn::{parse_macro_input, Data, DeriveInput, Fields, FieldsNamed, Lit, Meta, 
 
 const FIELD_ATTR_NAME: &str = "field";
 
-#[proc_macro_derive(PositionalRow, attributes(field))]
-pub fn positional_row(tokens: TokenStream) -> TokenStream {
+#[proc_macro_derive(ToPositionalRow, attributes(field))]
+pub fn to_positional_row(tokens: TokenStream) -> TokenStream {
     let ast = parse_macro_input!(tokens as DeriveInput);
-    positional_for_struct(ast).into()
+    to_positional_for_struct(ast).into()
 }
 
-fn positional_for_struct(ast: syn::DeriveInput) -> proc_macro2::TokenStream {
+fn to_positional_for_struct(ast: syn::DeriveInput) -> proc_macro2::TokenStream {
     let type_name = ast.ident;
     let type_span = type_name.span();
 
@@ -23,13 +23,47 @@ fn positional_for_struct(ast: syn::DeriveInput) -> proc_macro2::TokenStream {
                     Ok(to_positional_stream) => to_positional_stream,
                     Err(error) => return error,
                 };
+                quote! {
+                    impl ToPositionalRow for #type_name {
+                        #to_positional
+                    }
+                }
+            }
+            Fields::Unnamed(_) => {
+                quote_spanned!(type_span=> compile_error!("only structs with named fields! This is an unnamed struct"))
+            }
+            Fields::Unit => {
+                quote_spanned!(type_span=> compile_error!("only structs with named fields! This is a unit struct"))
+            }
+        },
+        Data::Enum(_) => {
+            quote_spanned!(type_span=> compile_error!("only structs! This is an enum"))
+        }
+        Data::Union(_) => {
+            quote_spanned!(type_span=> compile_error!("only structs! This is a union type"))
+        }
+    }
+}
+
+#[proc_macro_derive(FromPositionalRow, attributes(field))]
+pub fn from_positional_row(tokens: TokenStream) -> TokenStream {
+    let ast = parse_macro_input!(tokens as DeriveInput);
+    from_positional_for_struct(ast).into()
+}
+
+fn from_positional_for_struct(ast: syn::DeriveInput) -> proc_macro2::TokenStream {
+    let type_name = ast.ident;
+    let type_span = type_name.span();
+
+    match ast.data {
+        Data::Struct(data_struct) => match data_struct.fields {
+            Fields::Named(fields) => {
                 let from_positional = match create_from_positional(&fields) {
                     Ok(from_positional_stream) => from_positional_stream,
                     Err(error) => return error,
                 };
                 quote! {
-                    impl PositionalRow for #type_name {
-                        #to_positional
+                    impl FromPositionalRow for #type_name {
                         #from_positional
                     }
                 }

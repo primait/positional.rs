@@ -12,3 +12,5 @@ proc-macro2 = "1.0.39"
 
 [dev-dependencies]
 chrono = "0.4.19"
+fake = { version = "2.4.3", features = ["derive", "chrono"] }
+rand = "0.8"
