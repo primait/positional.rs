@@ -1,5 +1,4 @@
 use positional::*;
-use positional_derive::PositionalRow;
 
 #[derive(PositionalRow)]
 struct Data {
@@ -17,7 +16,16 @@ pub fn main() {
         value: "test value".to_string(),
         count: 1_000_000,
     };
+    let data2 = Data {
+        id: "1".to_string(),
+        value: "test value".to_string(),
+        count: 1_000_000,
+    };
 
-    println!("{}", data.to_positional_row());
+    let positional_file: PositionalFile<Data> = PositionalFile::new(vec![data2]);
     assert_eq!("1    test value          10000", data.to_positional_row());
+    assert_eq!(
+        "1    test value          10000",
+        positional_file.to_positional_file()
+    );
 }
