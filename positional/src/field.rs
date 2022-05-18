@@ -1,6 +1,7 @@
 use std::iter;
 
 /// this represent a single field in a positional row
+#[derive(Debug)]
 pub struct PositionalField {
     value: String,
     size: usize,

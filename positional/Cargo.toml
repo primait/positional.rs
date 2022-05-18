@@ -9,3 +9,6 @@ edition = "2021"
 positional_derive = { path = "../positional_derive" }
 quote = "1.0"
 proc-macro2 = "1.0.39"
+
+[dev-dependencies]
+chrono = "0.4.19"

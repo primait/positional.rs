@@ -1,13 +1,15 @@
 use positional::*;
 use std::fmt::{Display, Formatter};
+use std::num::ParseIntError;
+use std::str::FromStr;
 
 #[derive(PositionalRow)]
 struct Data {
-    #[positional(size = 5)]
+    #[field(size = 5)]
     name: SubData,
-    #[positional(size = 5, filler = '-')]
+    #[field(size = 5, filler = '-')]
     age: i32,
-    #[positional(size = 20)]
+    #[field(size = 20)]
     address: String,
 }
 
@@ -18,6 +20,15 @@ struct SubData {
 impl Display for SubData {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         write!(f, "{}", self.id)
+    }
+}
+
+impl FromStr for SubData {
+    type Err = ParseIntError;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        let id: i32 = s.parse()?;
+        Ok(Self { id })
     }
 }
 
