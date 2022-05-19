@@ -17,10 +17,7 @@ impl PositionalField {
         align_left: bool,
     ) -> Self {
         Self {
-            value: value
-                .as_ref()
-                .map(|v| v.to_string())
-                .unwrap_or(String::new()),
+            value: value.map(|v| v.to_string()).unwrap_or(String::new()),
             size,
             filler,
             align_left,
