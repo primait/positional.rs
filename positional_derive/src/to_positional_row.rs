@@ -76,13 +76,13 @@ fn parse_fields_into_positional_field_stream(
                     // simple type definition like i32 or String
                     None => {
                         quote! {
-                            PositionalField::new(&Some(&self.#field_ident), #size, #filler, #align)
+                            PositionalField::new(Some(&self.#field_ident), #size, #filler, #align)
                         }
                     }
                     // optional type definition like Option<i32> or Option<String>
                     Some(_) => {
                         quote! {
-                            PositionalField::new(&self.#field_ident.as_ref(), #size, #filler, #align)
+                            PositionalField::new(self.#field_ident.as_ref(), #size, #filler, #align)
                         }
                     }
                 };

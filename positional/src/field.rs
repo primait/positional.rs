@@ -11,7 +11,7 @@ pub struct PositionalField {
 
 impl PositionalField {
     pub fn new<T: ToString>(
-        value: &Option<&T>,
+        value: Option<&T>,
         size: usize,
         filler: char,
         align_left: bool,
