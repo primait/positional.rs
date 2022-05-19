@@ -2,6 +2,7 @@ use quote::{quote, quote_spanned};
 use syn::{Data, Fields, FieldsNamed};
 
 use crate::attributes_parsing::{create_row_attributes, parse_meta, FieldAlignment};
+use crate::type_parsing::extract_option_type;
 
 pub fn to_positional_for_struct(ast: syn::DeriveInput) -> proc_macro2::TokenStream {
     let type_name = ast.ident;
@@ -63,14 +64,27 @@ fn parse_fields_into_positional_field_stream(
         for attr in &field.attrs {
             if attr.path.is_ident(super::FIELD_ATTR_NAME) {
                 let meta = attr.parse_meta().expect("unable to parse meta");
+                let field_type = extract_option_type(&field.ty);
                 let mut attrs = vec![];
                 parse_meta(&mut attrs, meta);
                 let row_attributes = create_row_attributes(attrs)?;
                 let size = row_attributes.size;
                 let filler = row_attributes.filler;
                 let align = row_attributes.align == FieldAlignment::Left;
-                let output = quote! {
-                    PositionalField::new(self.#field_ident.to_string(), #size, #filler, #align)
+
+                let output = match field_type {
+                    // simple type definition like i32 or String
+                    None => {
+                        quote! {
+                            PositionalField::new(&Some(&self.#field_ident), #size, #filler, #align)
+                        }
+                    }
+                    // optional type definition like Option<i32> or Option<String>
+                    Some(_) => {
+                        quote! {
+                            PositionalField::new(&self.#field_ident.as_ref(), #size, #filler, #align)
+                        }
+                    }
                 };
                 field_token_streams.push(output);
             }

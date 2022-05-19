@@ -10,9 +10,17 @@ pub struct PositionalField {
 }
 
 impl PositionalField {
-    pub fn new(value: impl Into<String>, size: usize, filler: char, align_left: bool) -> Self {
+    pub fn new<T: ToString>(
+        value: &Option<&T>,
+        size: usize,
+        filler: char,
+        align_left: bool,
+    ) -> Self {
         Self {
-            value: value.into(),
+            value: value
+                .as_ref()
+                .map(|v| v.to_string())
+                .unwrap_or(String::new()),
             size,
             filler,
             align_left,
@@ -22,7 +30,7 @@ impl PositionalField {
 
 impl ToString for PositionalField {
     fn to_string(&self) -> String {
-        let value_size = self.value.to_string().len();
+        let value_size = self.value.len();
         let fill = if value_size >= self.size {
             "".to_string()
         } else {

@@ -4,6 +4,7 @@ use syn::{parse_macro_input, DeriveInput};
 mod attributes_parsing;
 mod from_positional_rows;
 mod to_positional_row;
+mod type_parsing;
 
 use from_positional_rows::from_positional_for_struct;
 use to_positional_row::to_positional_for_struct;
