@@ -21,14 +21,14 @@ impl Data {
 }
 
 #[test]
-fn test_parse_single_row() {
+fn parse() {
     let row = FromPositionalRow::parse("1    -----the address is this ")
         .expect("error converting from positional row");
     assert_eq!(Data::new(1, None, "the address is this"), row);
 }
 
 #[test]
-fn test_write_single_row() {
+fn write() {
     let rows = vec![Data::new(1, None, "the address is this")];
     let positional_file: Writer<Data> = Writer::new(rows);
     assert_eq!(

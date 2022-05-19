@@ -43,7 +43,7 @@ impl Data {
 }
 
 #[test]
-fn test_simple_positional_file() {
+fn simple() {
     let rows = vec![Data::new(1, 10, "the address is this")];
     let positional_file: Writer<Data> = Writer::new(rows);
     assert_eq!(

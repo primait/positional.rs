@@ -24,7 +24,7 @@ impl Data {
 }
 
 #[test]
-fn test_simple_positional_file() {
+fn simple() {
     let mut ids = 1..;
     let rows = vec![
         Data::new(ids.next().unwrap(), "test", 10, "the address is this"),

@@ -3,7 +3,9 @@ name = "positional"
 version = "0.1.0"
 edition = "2021"
 
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+[[bench]]
+name = "serialize"
+harness = false
 
 [dependencies]
 positional_derive = { version = "0.1", path = "../positional_derive" }
@@ -14,5 +16,6 @@ itertools = "0.10.3"
 
 [dev-dependencies]
 chrono = "0.4.19"
+criterion = "0.3.5"
 fake = { version = "2.4.3", features = ["derive", "chrono"] }
 rand = "0.8"

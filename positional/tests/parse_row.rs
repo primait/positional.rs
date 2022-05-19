@@ -21,14 +21,14 @@ impl Data {
 }
 
 #[test]
-fn test_parse_single_row() {
+fn parse() {
     let row = FromPositionalRow::parse("1    ---10the address is this ")
         .expect("error converting from positional row");
     assert_eq!(Data::new(1, 10, "the address is this"), row);
 }
 
 #[test]
-fn test_serialize_and_deserialize() {
+fn ser_de() {
     let data = Data::new(1, 100, "the address is this");
     let row = data.to_positional_row();
     let original_data: Data =
