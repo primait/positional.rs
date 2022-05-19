@@ -27,7 +27,7 @@ impl ToString for PositionalField {
             "".to_string()
         } else {
             iter::repeat(self.filler)
-                .take(&self.size - value_size)
+                .take(self.size - value_size)
                 .collect()
         };
         let value_as_string = if value_size >= self.size {

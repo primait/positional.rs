@@ -1,6 +1,7 @@
 use crate::row::ToPositionalRow;
 use crate::{FromPositionalRow, PositionalError};
 use itertools::Itertools;
+use std::fmt::{Display, Formatter};
 use std::ops::ControlFlow;
 use std::str::FromStr;
 
@@ -15,10 +16,13 @@ impl<T: ToPositionalRow> Writer<T> {
             rows: rows.into_iter().collect(),
         }
     }
+}
 
-    pub fn to_string(&self) -> String {
+impl<T: ToPositionalRow> Display for Writer<T> {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         let rows = self.rows.iter().map(|row| row.to_positional_row());
-        Itertools::intersperse(rows, "\n".to_string()).collect()
+        let output: String = Itertools::intersperse(rows, "\n".to_string()).collect();
+        write!(f, "{}", output)
     }
 }
 

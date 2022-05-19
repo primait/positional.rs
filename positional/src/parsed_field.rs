@@ -10,7 +10,7 @@ pub struct PositionalParsedField {
 impl PositionalParsedField {
     pub fn new(row: String, offset: usize, size: usize, filler: char, align_left: bool) -> Self {
         Self {
-            row: row.into(),
+            row,
             offset,
             size,
             filler,
