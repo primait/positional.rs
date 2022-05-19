@@ -21,7 +21,7 @@ pub fn main() {
     let output = positional_file.to_string();
     //println!("{}", &output);
 
-    let reader: Reader<Data> = Reader::from_str(&output).unwrap();
+    let _reader: Reader<Data> = Reader::from_str(&output).unwrap();
     // for row in reader {
     //     println!("{:?}", row);
     // }
