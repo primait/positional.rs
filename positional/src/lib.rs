@@ -6,7 +6,7 @@ mod row;
 
 pub use self::{
     error::{PositionalError, PositionalResult},
-    field::PositionalField,
+    field::{PositionalField, ToPositionalField},
     file::{Reader, Writer},
     parsed_field::PositionalParsedField,
     row::{FromPositionalRow, ToPositionalRow},

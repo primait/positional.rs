@@ -1,4 +1,18 @@
+use std::fmt::Display;
 use std::iter;
+
+/// a trait to represent a type that could be converted to a positional field
+/// There is a handy generic implementation for every type that implements Display,
+/// but if you want to customize the output on the file you should implement this trait
+pub trait ToPositionalField {
+    fn to_positional_field(&self) -> String;
+}
+
+impl<T: ToString> ToPositionalField for T {
+    fn to_positional_field(&self) -> String {
+        self.to_string()
+    }
+}
 
 /// this represent a single field in a positional row
 #[derive(Debug)]
@@ -10,14 +24,16 @@ pub struct PositionalField {
 }
 
 impl PositionalField {
-    pub fn new<T: ToString>(
+    pub fn new<T: ToPositionalField>(
         value: Option<&T>,
         size: usize,
         filler: char,
         align_left: bool,
     ) -> Self {
         Self {
-            value: value.map(|v| v.to_string()).unwrap_or(String::new()),
+            value: value
+                .map(|v| v.to_positional_field())
+                .unwrap_or(String::new()),
             size,
             filler,
             align_left,
