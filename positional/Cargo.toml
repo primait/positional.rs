@@ -13,6 +13,7 @@ quote = "1.0"
 proc-macro2 = "1.0.39"
 thiserror = "1.0.31"
 itertools = "0.10.3"
+pad = "0.1.6"
 
 [dev-dependencies]
 chrono = "0.4.19"

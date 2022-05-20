@@ -1,3 +1,4 @@
+use proc_macro2::TokenStream;
 use quote::{quote, quote_spanned};
 use syn::{Data, Fields, FieldsNamed};
 
@@ -40,16 +41,10 @@ pub fn to_positional_for_struct(ast: syn::DeriveInput) -> proc_macro2::TokenStre
 fn create_to_positional(
     fields: &FieldsNamed,
 ) -> Result<proc_macro2::TokenStream, proc_macro2::TokenStream> {
-    parse_fields_into_positional_field_stream(fields).map(|fields| {
-        quote! {
-            fn to_positional_row(&self) -> String {
-                let out: Vec<PositionalField> = vec![#(#fields),*];
-                let mut fields = vec![];
-                for positional_field in out {
-                    fields.push(positional_field.to_string());
-                }
-                fields.join("")
-            }
+    let fields: Vec<TokenStream> = parse_fields_into_positional_field_stream(fields)?;
+    Ok(quote! {
+        fn to_positional_row(&self) -> String {
+            vec![#(#fields),*].into_iter().map(|field| field.to_string()).collect::<Vec<String>>().join("")
         }
     })
 }

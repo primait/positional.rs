@@ -20,8 +20,7 @@ impl<T: ToPositionalRow> Writer<T> {
 
 impl<T: ToPositionalRow> Display for Writer<T> {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        let rows = self.rows.iter().map(|row| row.to_positional_row());
-        let output: String = Itertools::intersperse(rows, "\n".to_string()).collect();
+        let output: String = self.rows.iter().map(T::to_positional_row).join("\n");
         write!(f, "{}", output)
     }
 }

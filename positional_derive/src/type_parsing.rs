@@ -11,23 +11,19 @@ pub fn extract_option_type(ty: &syn::Type) -> Option<&syn::Type> {
     // TODO store (with lazy static) the vec of string
     // TODO maybe optimization, reverse the order of segments
     fn extract_option_segment(path: &Path) -> Option<&PathSegment> {
-        let idents_of_path = path
-            .segments
-            .iter()
-            .into_iter()
-            .fold(String::new(), |mut acc, v| {
-                acc.push_str(&v.ident.to_string());
-                acc.push('|');
-                acc
-            });
+        let idents_of_path = path.segments.iter().fold(String::new(), |mut acc, v| {
+            acc.push_str(&v.ident.to_string());
+            acc.push('|');
+            acc
+        });
         vec!["Option|", "std|option|Option|", "core|option|Option|"]
-            .into_iter()
+            .iter()
             .find(|s| &idents_of_path == *s)
             .and_then(|_| path.segments.last())
     }
 
     extract_type_path(ty)
-        .and_then(|path| extract_option_segment(path))
+        .and_then(extract_option_segment)
         .and_then(|path_seg| {
             let type_params = &path_seg.arguments;
             // It should have only on angle-bracketed param ("<String>"):

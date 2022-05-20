@@ -1,4 +1,4 @@
-use std::iter;
+use pad::{Alignment, PadStr};
 
 /// a trait to represent a type that could be converted to a positional field
 ///
@@ -8,7 +8,7 @@ pub trait ToPositionalField {
     fn to_positional_field(&self) -> String;
 }
 
-impl<T: ToString> ToPositionalField for T {
+impl<T: ToString + ?Sized> ToPositionalField for T {
     fn to_positional_field(&self) -> String {
         self.to_string()
     }
@@ -24,16 +24,14 @@ pub struct PositionalField {
 }
 
 impl PositionalField {
-    pub fn new<T: ToPositionalField>(
+    pub fn new<T: ToPositionalField + ?Sized>(
         value: Option<&T>,
         size: usize,
         filler: char,
         align_left: bool,
     ) -> Self {
         Self {
-            value: value
-                .map(|v| v.to_positional_field())
-                .unwrap_or(String::new()),
+            value: value.map(|v| v.to_positional_field()).unwrap_or_default(),
             size,
             filler,
             align_left,
@@ -43,26 +41,55 @@ impl PositionalField {
 
 impl ToString for PositionalField {
     fn to_string(&self) -> String {
-        let value_size = self.value.len();
-        let fill = if value_size >= self.size {
-            "".to_string()
+        let alignment: Alignment = if self.align_left {
+            Alignment::Left
         } else {
-            iter::repeat(self.filler)
-                .take(self.size - value_size)
-                .collect()
-        };
-        let value_as_string = if value_size >= self.size {
-            let mut v = self.value.to_string();
-            v.truncate(self.size);
-            v
-        } else {
-            self.value.to_string()
+            Alignment::Right
         };
 
-        if self.align_left {
-            format!("{}{}", value_as_string, fill)
-        } else {
-            format!("{}{}", fill, value_as_string)
-        }
+        self.value.pad(self.size, self.filler, alignment, true)
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+
+    const TEST_STRING: &str = "scottex";
+
+    #[test]
+    fn empty_value_size_zero_to_string() {
+        let field = PositionalField::new(Some(""), 0, ' ', true);
+        assert!(field.to_string().is_empty());
+    }
+
+    #[test]
+    fn non_empty_value_size_zero_to_string() {
+        let field = PositionalField::new(Some(TEST_STRING), 0, ' ', true);
+        assert!(field.to_string().is_empty());
+    }
+
+    #[test]
+    fn empty_value_size_one_to_string() {
+        let field = PositionalField::new(Some(""), 1, ' ', true);
+        assert_eq!(field.to_string(), " ");
+    }
+
+    #[test]
+    fn non_empty_value_size_one_to_string() {
+        let field = PositionalField::new(Some(TEST_STRING), 1, ' ', true);
+        assert_eq!(field.to_string(), "s");
+    }
+
+    #[test]
+    fn non_empty_value_size_one_more_than_value_left_align_to_string() {
+        let field = PositionalField::new(Some(TEST_STRING), 8, ' ', true);
+        assert_eq!(field.to_string(), format!("{} ", TEST_STRING));
+    }
+
+    #[test]
+    fn non_empty_value_size_one_more_than_value_right_align_to_string() {
+        let field = PositionalField::new(Some(TEST_STRING), 8, ' ', false);
+        assert_eq!(field.to_string(), format!(" {}", TEST_STRING));
     }
 }

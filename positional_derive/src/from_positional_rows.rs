@@ -1,10 +1,11 @@
+use proc_macro2::TokenStream;
 use quote::{quote, quote_spanned};
 use syn::{Data, Fields, FieldsNamed};
 
 use crate::attributes_parsing::{create_row_attributes, parse_meta, FieldAlignment};
 use crate::type_parsing::extract_option_type;
 
-pub fn from_positional_for_struct(ast: syn::DeriveInput) -> proc_macro2::TokenStream {
+pub fn from_positional_for_struct(ast: syn::DeriveInput) -> TokenStream {
     let type_name = ast.ident;
     let type_span = type_name.span();
 
@@ -37,24 +38,21 @@ pub fn from_positional_for_struct(ast: syn::DeriveInput) -> proc_macro2::TokenSt
     }
 }
 
-fn create_from_positional(
-    fields: &FieldsNamed,
-) -> Result<proc_macro2::TokenStream, proc_macro2::TokenStream> {
-    parse_fields_into_struct_builder_stream(fields).map(|fields| {
-        quote! {
-            fn parse(row: impl ToString) -> Result<Self, Box<dyn std::error::Error>> where Self: Sized {
-                let row_string = row.to_string();
-                Ok(Self {
-                    #(#fields),*
-                })
-            }
+fn create_from_positional(fields: &FieldsNamed) -> Result<TokenStream, TokenStream> {
+    let fields: Vec<TokenStream> = parse_fields_into_struct_builder_stream(fields)?;
+    Ok(quote! {
+        fn parse(row: impl ToString) -> Result<Self, Box<dyn std::error::Error>> where Self: Sized {
+            let row_string = row.to_string();
+            Ok(Self {
+                #(#fields),*
+            })
         }
     })
 }
 
 fn parse_fields_into_struct_builder_stream(
     fields: &FieldsNamed,
-) -> Result<Vec<proc_macro2::TokenStream>, proc_macro2::TokenStream> {
+) -> Result<Vec<TokenStream>, TokenStream> {
     let mut field_token_streams = vec![];
     let mut offset = 0;
     for field in &fields.named {
