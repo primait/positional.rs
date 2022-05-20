@@ -1,4 +1,4 @@
-#[derive(Debug)]
+/// a single field ready to be parsed from a positional row
 pub struct PositionalParsedField {
     row: String,
     offset: usize,

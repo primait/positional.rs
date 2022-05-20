@@ -5,7 +5,7 @@ use std::fmt::{Display, Formatter};
 use std::ops::ControlFlow;
 use std::str::FromStr;
 
-/// a positional file is a collection of rows
+/// a positional file writer
 pub struct Writer<T: ToPositionalRow> {
     rows: Vec<T>,
 }
@@ -26,6 +26,7 @@ impl<T: ToPositionalRow> Display for Writer<T> {
     }
 }
 
+/// a positional file reader
 pub struct Reader<T: FromPositionalRow> {
     rows: Vec<T>,
 }

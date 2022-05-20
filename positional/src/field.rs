@@ -1,9 +1,9 @@
-use std::fmt::Display;
 use std::iter;
 
 /// a trait to represent a type that could be converted to a positional field
-/// There is a handy generic implementation for every type that implements Display,
-/// but if you want to customize the output on the file you should implement this trait
+///
+/// There is a generic implementation for types that implements Display
+/// If you want to customize the output on the file you should implement this trait
 pub trait ToPositionalField {
     fn to_positional_field(&self) -> String;
 }
@@ -14,7 +14,7 @@ impl<T: ToString> ToPositionalField for T {
     }
 }
 
-/// this represent a single field in a positional row
+/// a single field ready to be serialized in a positional row
 #[derive(Debug)]
 pub struct PositionalField {
     value: String,
