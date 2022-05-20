@@ -4,7 +4,11 @@ version = "0.1.0"
 edition = "2021"
 
 [[bench]]
-name = "serialize"
+name = "serde"
+harness = false
+
+[[bench]]
+name = "write_to_file"
 harness = false
 
 [dependencies]

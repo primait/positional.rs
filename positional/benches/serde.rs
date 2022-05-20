@@ -8,9 +8,43 @@ use std::str::FromStr;
 struct Data {
     #[field(size = 30)]
     name: String,
-
     #[field(size = 40, filler = '_', align = "right")]
     created: DateTime<Utc>,
+    #[field(size = 20, filler = '0')]
+    test1: String,
+    #[field(size = 20, filler = '0')]
+    test2: String,
+    #[field(size = 20, filler = '0')]
+    test3: String,
+    #[field(size = 20, filler = '0')]
+    test4: String,
+    #[field(size = 20, filler = '0')]
+    test5: String,
+    #[field(size = 20, filler = '0')]
+    test6: String,
+    #[field(size = 20, filler = '0')]
+    test7: String,
+    #[field(size = 20, filler = '0')]
+    test8: String,
+    #[field(size = 20, filler = '0')]
+    test9: CustomType,
+}
+
+#[derive(Dummy, Debug)]
+struct CustomType(String);
+
+impl ToPositionalField for CustomType {
+    fn to_positional_field(&self) -> String {
+        self.0.to_string()
+    }
+}
+
+impl FromStr for CustomType {
+    type Err = String;
+
+    fn from_str(s: &str) -> Result<Self, Self::Err> {
+        Ok(Self(s.to_owned()))
+    }
 }
 
 fn serialize_struct(c: &mut Criterion) {
