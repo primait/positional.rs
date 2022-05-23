@@ -18,11 +18,7 @@ args = [
 [tasks.test]
 command = "cargo"
 args = ["test"]
-dependencies = ["build", "test-noop"]
-
-[tasks.test-noop]
-command = "cargo"
-args = ["test", "--features", "noop"]
+dependencies = ["build"]
 
 [tasks.lint]
 description = "Run lint"
