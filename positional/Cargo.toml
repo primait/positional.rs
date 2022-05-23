@@ -12,7 +12,7 @@ name = "write_to_file"
 harness = false
 
 [dependencies]
-positional_derive = { version = "0.1", path = "../positional_derive" }
+positional_derive = { version = "=0.1.0", path = "../positional_derive" }
 quote = "1.0"
 proc-macro2 = "1.0.39"
 thiserror = "1.0.31"
