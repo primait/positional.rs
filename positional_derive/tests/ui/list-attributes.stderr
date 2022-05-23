@@ -1,0 +1,14 @@
+error: wrong attribute
+
+         = help: the field attribute of this macro accepts only name value attributes. Here you are using a list attribute. You should have something like #[field(size = "10")]
+
+ --> tests/ui/list-attributes.rs:5:7
+  |
+5 |     #[test(a)]
+  |       ^^^^^^^
+
+error: expected non-macro attribute, found attribute macro `test`
+ --> tests/ui/list-attributes.rs:5:7
+  |
+5 |     #[test(a)]
+  |       ^^^^ not a non-macro attribute

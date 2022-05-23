@@ -1,0 +1,12 @@
+error: item is not a struct or an enum
+
+         = help: `#[derive(ToPositionalRow)]` can only be used on structs or enums
+
+ --> tests/ui/unions.rs:4:1
+  |
+4 | / #[repr(C)]
+5 | | union MyUnion {
+6 | |     f1: u32,
+7 | |     f2: f32,
+8 | | }
+  | |_^

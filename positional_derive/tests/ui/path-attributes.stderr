@@ -1,0 +1,8 @@
+error: wrong attribute
+
+         = help: the field attribute of this macro accepts only name value attributes. Here you are using a path attribute. You should have something like #[field(size = "10")]
+
+ --> tests/ui/path-attributes.rs:5:7
+  |
+5 |     #[field]
+  |       ^^^^^
