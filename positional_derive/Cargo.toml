@@ -2,6 +2,8 @@
 name = "positional_derive"
 version = "0.1.0"
 edition = "2021"
+description = "macros for positional crate"
+license = "MIT"
 
 [lib]
 proc-macro = true
