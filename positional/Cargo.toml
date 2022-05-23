@@ -2,6 +2,8 @@
 name = "positional"
 version = "0.1.0"
 edition = "2021"
+description = "A library to author/parse positional files"
+license = "MIT"
 
 [[bench]]
 name = "serde"
