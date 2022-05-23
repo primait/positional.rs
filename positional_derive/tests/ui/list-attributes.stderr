@@ -1,14 +1,8 @@
-error: wrong attribute
+error: wrong field configuration
 
-         = help: the field attribute of this macro accepts only name value attributes. Here you are using a list attribute. You should have something like #[field(size = "10")]
+         = help: there should only be name = value couple inside the field configuration
 
- --> tests/ui/list-attributes.rs:5:7
+ --> tests/ui/list-attributes.rs:5:13
   |
-5 |     #[test(a)]
-  |       ^^^^^^^
-
-error: expected non-macro attribute, found attribute macro `test`
- --> tests/ui/list-attributes.rs:5:7
-  |
-5 |     #[test(a)]
-  |       ^^^^ not a non-macro attribute
+5 |     #[field(a)]
+  |             ^

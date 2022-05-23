@@ -2,7 +2,7 @@ use positional_derive::ToPositionalRow;
 
 #[derive(ToPositionalRow)]
 struct MyData {
-    #[test(a)]
+    #[field(a)]
     name: String,
 }
 

@@ -1,6 +1,6 @@
-error: wrong attribute
+error: wrong field configuration
 
-         = help: the field attribute of this macro accepts only name value attributes. Here you are using a path attribute. You should have something like #[field(size = "10")]
+         = help: there should only be name = value couple inside the field configuration
 
  --> tests/ui/path-attributes.rs:5:7
   |
