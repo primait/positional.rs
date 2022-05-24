@@ -1,0 +1,8 @@
+error: wrong field configuration
+
+         = help: there should only be name = value couple inside the field configuration
+
+ --> tests/ui/path-attributes.rs:5:7
+  |
+5 |     #[field]
+  |       ^^^^^

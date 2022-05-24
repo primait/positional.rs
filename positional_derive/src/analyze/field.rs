@@ -1,4 +1,24 @@
-pub fn extract_option_type(ty: &syn::Type) -> Option<&syn::Type> {
+use crate::analyze::row_attributes::RowAttributes;
+use std::collections::HashMap;
+
+pub struct Field {
+    pub ident: syn::Field,
+    pub optional: bool,
+    pub attributes: RowAttributes,
+}
+
+impl Field {
+    pub fn new(field: syn::Field, attrs: &HashMap<String, syn::Lit>) -> Result<Self, String> {
+        let option_type = extract_option_type(&field.ty);
+        Ok(Self {
+            optional: option_type.is_some(),
+            ident: field,
+            attributes: attrs.try_into()?,
+        })
+    }
+}
+
+fn extract_option_type(ty: &syn::Type) -> Option<&syn::Type> {
     use syn::{GenericArgument, Path, PathArguments, PathSegment};
 
     fn extract_type_path(ty: &syn::Type) -> Option<&Path> {

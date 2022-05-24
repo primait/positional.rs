@@ -1,0 +1,8 @@
+error: only structs with named fields
+
+         = help: `#[derive(ToPositionalRow)]` can only be used on structs with named fields, this is a struct with unnamed fields
+
+ --> tests/ui/struct-with-anonymous-fields.rs:4:14
+  |
+4 | struct MyData(i32, String);
+  |              ^^^^^^^^^^^^^
