@@ -69,7 +69,7 @@ fn parse_meta(meta: &syn::Meta, field: &syn::Field, attrs: &mut HashMap<String, 
         Meta::List(meta_list) => {
             for nested_meta in &meta_list.nested {
                 match nested_meta {
-                    NestedMeta::Meta(name_value) => parse_meta(&name_value, field, attrs),
+                    NestedMeta::Meta(name_value) => parse_meta(name_value, field, attrs),
                     NestedMeta::Lit(lit) => {
                         abort!(
                             lit,
