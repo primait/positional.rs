@@ -1,0 +1,9 @@
+error: wrong field configuration
+
+         = help: filler is not a char
+
+ --> tests/ui/wrong-filler-type.rs:5:5
+  |
+5 | /     #[field(size = 10, filler = "a")]
+6 | |     name: String,
+  | |________________^

@@ -1,0 +1,8 @@
+error: wrong field configuration
+
+         = help: there should only be name = value couple inside the field configuration
+
+ --> tests/ui/list-attributes.rs:5:13
+  |
+5 |     #[field(a)]
+  |             ^

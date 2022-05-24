@@ -1,0 +1,10 @@
+error: only structs with named fields
+
+         = help: `#[derive(ToPositionalRow)]` can only be used on structs with named fields, this is a unit struct
+
+ --> tests/ui/unit-struct.rs:3:10
+  |
+3 | #[derive(ToPositionalRow)]
+  |          ^^^^^^^^^^^^^^^
+  |
+  = note: this error originates in the derive macro `ToPositionalRow` (in Nightly builds, run with -Z macro-backtrace for more info)
