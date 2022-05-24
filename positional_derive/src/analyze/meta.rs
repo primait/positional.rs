@@ -1,21 +1,26 @@
 use proc_macro_error::abort;
-use quote::ToTokens;
-use std::collections::{HashMap, HashSet};
+use std::collections::HashMap;
 use syn::{Meta, NestedMeta};
 
 use crate::analyze::Field;
 
 const FIELD_ATTRIBUTE: &str = "field";
-pub type FieldWithParsedAttributes = HashMap<syn::Ident, HashMap<String, syn::Lit>>;
 
 pub fn create_fields(fields_named: &syn::FieldsNamed) -> Vec<Field> {
-    fields_named
-        .named
-        .iter()
-        .map(|field| {
-            parse_field_attributes(field).unwrap_or_else(|| Field::new(field, &HashMap::new()))
+    let mut fields = vec![];
+    for field in &fields_named.named {
+        fields.push(match parse_field_attributes(field) {
+            None => {
+                abort!(
+                    fields_named,
+                    "wrong field configuration";
+                    help = "something went wrong while parsing your field configuration"
+                )
+            }
+            Some(field) => field,
         })
-        .collect()
+    }
+    fields
 }
 
 fn parse_field_attributes(field: &syn::Field) -> Option<Field> {
@@ -31,13 +36,13 @@ fn parse_field_attribute_meta(field: &syn::Field, attribute: &syn::Attribute) ->
         Ok(meta) => {
             let mut attrs = HashMap::new();
             parse_meta(&meta, field, &mut attrs);
-            match Field::new(field, &attrs) {
+            match Field::new(field.clone(), &attrs) {
                 Ok(field) => field,
-                Err(_) => {
+                Err(err) => {
                     abort!(
                         field,
                         "wrong field configuration";
-                        help = "something went wrong while parsing your field configuration"
+                        help = err
                     )
                 }
             }

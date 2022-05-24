@@ -1,6 +1,6 @@
 use proc_macro2::TokenStream;
 use proc_macro_error::abort;
-use syn::{parse_macro_input, Data, DataEnum, DataStruct, DataUnion, DeriveInput, Fields};
+use syn::{Data, DeriveInput};
 
 pub type Ast = DeriveInput;
 

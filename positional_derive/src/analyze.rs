@@ -1,17 +1,20 @@
 mod field;
+mod field_alignment;
 mod meta;
 mod row_attributes;
+
+pub use field_alignment::FieldAlignment;
 
 use crate::analyze::field::Field;
 use crate::analyze::meta::create_fields;
 use proc_macro_error::{abort, abort_call_site};
-use std::str::FromStr;
 use syn::{Data, DataStruct, Fields};
 
 use crate::Ast;
 
 pub struct Model {
-    fields: Vec<Field>,
+    pub container_identity: syn::Ident,
+    pub fields: Vec<Field>,
 }
 
 pub fn analyze(ast: Ast) -> Model {
@@ -42,71 +45,14 @@ pub fn analyze(ast: Ast) -> Model {
             )
         }
         Data::Struct(DataStruct {
-            fields: Fields::Named(ref fields_named),
+            fields: Fields::Named(fields_named),
             ..
-        }) => create_fields(fields_named),
-        // this is blocked in the parsing phase
+        }) => create_fields(&fields_named),
+        // this is blocked at the parsing phase
         Data::Union(_) => unreachable!(),
     };
-    Model { fields }
+    Model {
+        container_identity: ast.ident,
+        fields,
+    }
 }
-
-//
-// fn create_row_attribute_from_attrs(attributes: &Vec<Attribute>) -> RowAttributes {
-//     let mut metas = HashMap::new();
-//     for attribute in attributes {
-//         match attribute.parse_meta() {
-//             Ok(meta) => match meta {
-//                 Meta::Path(path) => {
-//                     abort!(
-//                         path,
-//                         "wrong attribute";
-//                         help = "the field attribute of this macro accepts only name value attributes. Here you are using a path attribute. You should have something like #[field(size = \"10\")]"
-//                     )
-//                 }
-//                 Meta::List(list) => {
-//                     abort!(
-//                         list,
-//                         "wrong attribute";
-//                         help = "the field attribute of this macro accepts only name value attributes. Here you are using a list attribute. You should have something like #[field(size = \"10\")]"
-//                     )
-//                 }
-//                 Meta::NameValue(name_value) => {
-//                     metas.insert(name_value.path.get_ident().unwrap().to_string(), name_value);
-//                 }
-//             },
-//             Err(_error) => {
-//                 abort!(
-//                     attribute,
-//                     "wrong attribute";
-//                     help = "there is something wrong with your attribute definition"
-//                 )
-//             }
-//         }
-//     }
-//
-//     let field_alignment: FieldAlignment = metas
-//         .get("align")
-//         .map(|meta_name_value| match &meta_name_value.lit {
-//             Lit::Str(lit_str) => match lit_str.value().parse() {
-//                 Ok(parsed) => parsed,
-//                 Err(_) => abort!(
-//                     meta_name_value,
-//                     "wrong attribute";
-//                     help = "there is something wrong with your attribute definition"
-//                 ),
-//             },
-//             _ => abort!(
-//                 meta_name_value,
-//                 "wrong attribute";
-//                 help = "there is something wrong with your attribute definition"
-//             ),
-//         })
-//         .unwrap_or(FieldAlignment::Left);
-//
-//     RowAttributes {
-//         align: field_alignment,
-//         size: 20,
-//         filler: ' ',
-//     }
-// }
