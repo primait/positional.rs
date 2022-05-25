@@ -1,9 +1,8 @@
 error: wrong field configuration
 
-         = help: align value should be 'left', 'right', 'l' or 'r', "" provided
+         = help: wrong field configuration
 
- --> tests/ui/align-empty.rs:5:5
+ --> tests/ui/align-empty.rs:5:32
   |
-5 | /     #[field(size = 10, align = "")]
-6 | |     name: String,
-  | |________________^
+5 |     #[field(size = 10, align = "")]
+  |                                ^^
