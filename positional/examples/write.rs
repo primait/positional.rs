@@ -1,17 +1,19 @@
 use chrono::{DateTime, Utc};
 use fake::{Dummy, Fake, Faker};
 use positional::*;
-use std::str::FromStr;
 
 #[derive(ToPositionalRow, FromPositionalRow, Dummy, Debug)]
 struct Data {
-    #[field(size = 30)]
+    #[field(size = 25)]
     name: String,
+
+    #[field(size = 25)]
+    surname: String,
 
     #[field(size = 40, filler = '_', align = "right")]
     created: DateTime<Utc>,
 
-    #[field(size = 40, filler = '_', align = "right")]
+    #[field(size = 40, filler = '+', align = "right")]
     updated_at: Option<DateTime<Utc>>,
 }
 
@@ -22,10 +24,5 @@ pub fn main() {
     }
     let positional_file = Writer::new(rows);
     let output = positional_file.to_string();
-    // println!("{}", &output);
-
-    let _reader: Reader<Data> = Reader::from_str(&output).unwrap();
-    // for row in reader {
-    //     println!("{:?}", row);
-    // }
+    println!("{}", &output);
 }

@@ -33,7 +33,8 @@ pub fn analyze(ast: Ast) -> Model {
             fields: Fields::Unit,
             ..
         }) => {
-            abort_call_site!(
+            abort!(
+                ast,
                 "only structs with named fields";
                 help = "`#[derive(ToPositionalRow)]` can only be used on structs with named fields, this is a unit struct"
             )

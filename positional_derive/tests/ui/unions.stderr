@@ -1,6 +1,6 @@
 error: item is not a struct or an enum
 
-         = help: `#[derive(ToPositionalRow)]` can only be used on structs or enums
+         = help: derives can only be used on structs or enums
 
  --> tests/ui/unions.rs:4:1
   |

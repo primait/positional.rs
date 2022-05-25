@@ -30,7 +30,7 @@ pub fn parse(tokens: TokenStream) -> Ast {
             abort!(
                 item,
                 "item is not a struct or an enum";
-                help = "`#[derive(ToPositionalRow)]` can only be used on structs or enums"
+                help = "derives can only be used on structs or enums"
             )
         }
         Err(_) => unreachable!(),
