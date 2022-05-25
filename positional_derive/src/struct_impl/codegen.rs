@@ -1,5 +1,5 @@
-use crate::lower::{Field, Ir};
-use crate::ImplBlockType;
+use crate::struct_impl::lower::{Field, Ir};
+use crate::struct_impl::ImplBlockType;
 use proc_macro2::TokenStream;
 use quote::quote;
 

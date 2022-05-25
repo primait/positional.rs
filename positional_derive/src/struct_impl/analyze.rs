@@ -1,3 +1,6 @@
+use proc_macro_error::abort;
+use syn::{Data, DataStruct, Fields};
+
 mod field;
 mod field_alignment;
 mod meta;
@@ -5,12 +8,9 @@ mod row_attributes;
 
 pub use field_alignment::FieldAlignment;
 
-use crate::analyze::field::Field;
-use crate::analyze::meta::create_fields;
-use proc_macro_error::{abort, abort_call_site};
-use syn::{Data, DataStruct, Fields};
-
 use crate::Ast;
+use field::Field;
+use meta::create_fields;
 
 pub struct Model {
     pub container_identity: syn::Ident,
@@ -40,7 +40,8 @@ pub fn analyze(ast: Ast) -> Model {
             )
         }
         Data::Enum(_) => {
-            abort_call_site!(
+            abort!(
+                ast,
                 "only structs with named fields";
                 help = "`#[derive(ToPositionalRow)]` can only be used on structs with named fields, this is an enum"
             )

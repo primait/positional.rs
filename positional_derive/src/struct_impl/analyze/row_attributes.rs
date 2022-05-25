@@ -1,6 +1,7 @@
-use super::field_alignment::FieldAlignment;
 use std::collections::HashMap;
 use syn::Lit;
+
+use super::field_alignment::FieldAlignment;
 
 const ATTR_NAME_SIZE: &str = "size";
 const ATTR_NAME_FILLER: &str = "filler";

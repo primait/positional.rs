@@ -1,5 +1,5 @@
-use crate::analyze::FieldAlignment;
-use crate::analyze::Model;
+use super::analyze::FieldAlignment;
+use super::analyze::Model;
 
 pub struct Ir {
     pub container_identity: syn::Ident,

@@ -1,4 +1,4 @@
-use crate::analyze::row_attributes::RowAttributes;
+use super::row_attributes::RowAttributes;
 use proc_macro_error::abort;
 use std::collections::HashMap;
 
