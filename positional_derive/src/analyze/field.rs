@@ -1,4 +1,5 @@
 use crate::analyze::row_attributes::RowAttributes;
+use proc_macro_error::abort;
 use std::collections::HashMap;
 
 pub struct Field {
@@ -10,11 +11,30 @@ pub struct Field {
 impl Field {
     pub fn new(field: syn::Field, attrs: &HashMap<String, syn::Lit>) -> Result<Self, String> {
         let option_type = extract_option_type(&field.ty);
-        Ok(Self {
-            optional: option_type.is_some(),
-            ident: field,
-            attributes: attrs.try_into()?,
-        })
+        let attributes: Result<RowAttributes, Option<syn::Lit>> = attrs.try_into();
+        match attributes {
+            Ok(attrs) => Ok(Self {
+                optional: option_type.is_some(),
+                ident: field,
+                attributes: attrs,
+            }),
+            Err(lit) => match lit {
+                None => {
+                    abort!(
+                        field,
+                        "missing field configuration";
+                        help = "missing field configuration"
+                    )
+                }
+                Some(lit) => {
+                    abort!(
+                        lit,
+                        "wrong field configuration";
+                        help = "wrong field configuration"
+                    )
+                }
+            },
+        }
     }
 }
 

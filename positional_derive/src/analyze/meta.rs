@@ -40,7 +40,7 @@ fn parse_field_attribute_meta(field: &syn::Field, attribute: &syn::Attribute) ->
                 Ok(field) => field,
                 Err(err) => {
                     abort!(
-                        field,
+                        attribute,
                         "wrong field configuration";
                         help = err
                     )
