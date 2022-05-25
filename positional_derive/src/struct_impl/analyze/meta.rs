@@ -2,7 +2,7 @@ use proc_macro_error::abort;
 use std::collections::HashMap;
 use syn::{Meta, NestedMeta};
 
-use crate::analyze::Field;
+use super::Field;
 
 const FIELD_ATTRIBUTE: &str = "field";
 
