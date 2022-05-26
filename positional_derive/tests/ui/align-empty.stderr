@@ -1,6 +1,6 @@
 error: wrong field configuration
 
-         = help: wrong field configuration
+         = help: align value should be 'left', 'right', 'l' or 'r'
 
  --> tests/ui/align-empty.rs:5:32
   |
