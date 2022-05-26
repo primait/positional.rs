@@ -7,7 +7,7 @@ mod struct_impl;
 use parse::{parse, Ast};
 use struct_impl::ImplBlockType;
 
-/// Add to structs to make them deserializable from positional strings
+/// Add to structs to make them deserializable from positional rows
 #[proc_macro_derive(FromPositionalRow, attributes(field))]
 pub fn from_positional_row(tokens: TokenStream) -> TokenStream {
     let ast = parse(tokens.into());
@@ -15,12 +15,9 @@ pub fn from_positional_row(tokens: TokenStream) -> TokenStream {
     let ir = struct_impl::lower(model);
     let rust = struct_impl::codegen(ir, ImplBlockType::From);
     rust.into()
-
-    // let ast = parse_macro_input!(tokens as DeriveInput);
-    // from_positional_for_struct(ast).into()
 }
 
-/// Add to structs to make them serializable into positional files
+/// Add to structs to make them serializable into positional rows
 #[proc_macro_derive(ToPositionalRow, attributes(field))]
 #[proc_macro_error]
 pub fn to_positional_row(tokens: TokenStream) -> TokenStream {

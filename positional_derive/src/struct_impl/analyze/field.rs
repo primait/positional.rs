@@ -1,79 +1,133 @@
-use super::row_attributes::RowAttributes;
 use proc_macro_error::abort;
 use std::collections::HashMap;
+use syn::{Lit, LitChar, LitInt, LitStr, Meta, NestedMeta};
+
+const FIELD_ATTRIBUTE: &str = "field";
 
 pub struct Field {
-    pub ident: syn::Field,
-    pub optional: bool,
-    pub attributes: RowAttributes,
+    pub field: syn::Field,
+    pub size: LitInt,
+    pub filler: Option<LitChar>,
+    pub align: Option<LitStr>,
 }
 
 impl Field {
-    pub fn new(field: syn::Field, attrs: &HashMap<String, syn::Lit>) -> Result<Self, String> {
-        let option_type = extract_option_type(&field.ty);
-        let attributes: Result<RowAttributes, Option<syn::Lit>> = attrs.try_into();
-        match attributes {
-            Ok(attrs) => Ok(Self {
-                optional: option_type.is_some(),
-                ident: field,
-                attributes: attrs,
-            }),
-            Err(lit) => match lit {
+    pub fn new(field: syn::Field) -> Option<Self> {
+        // it is safe to unwrap here, since we know this is a named field
+        parse_field_attributes(&field).map(|(size, filler, align)| Self {
+            field,
+            size,
+            filler,
+            align,
+        })
+    }
+}
+
+fn parse_field_attributes(field: &syn::Field) -> Option<(LitInt, Option<LitChar>, Option<LitStr>)> {
+    field
+        .attrs
+        .iter()
+        .find(|attribute| attribute.path.is_ident(FIELD_ATTRIBUTE))
+        .map(|attribute| parse_field_attribute_meta(field, attribute))
+}
+
+fn parse_field_attribute_meta(
+    field: &syn::Field,
+    attribute: &syn::Attribute,
+) -> (LitInt, Option<LitChar>, Option<LitStr>) {
+    match attribute.parse_meta() {
+        Ok(meta) => {
+            let mut attrs = HashMap::new();
+            parse_meta(&meta, field, &mut attrs);
+
+            let size = match attrs.get("size") {
                 None => {
                     abort!(
-                        field,
-                        "missing field configuration";
-                        help = "missing field configuration"
-                    )
-                }
-                Some(lit) => {
-                    abort!(
-                        lit,
+                        attribute,
                         "wrong field configuration";
-                        help = "wrong field configuration"
+                        help = "you need to provide at least a size configuration to the field"
                     )
                 }
-            },
+                Some(size_lit) => match size_lit {
+                    Lit::Int(lit_int) => lit_int,
+                    _ => {
+                        abort!(
+                            attribute,
+                            "wrong field configuration";
+                            help = "the size configuration should be a number"
+                        )
+                    }
+                },
+            };
+
+            let filler = match attrs.get("filler") {
+                None => None,
+                Some(filler_lit) => match filler_lit {
+                    Lit::Char(lit_char) => Some(lit_char),
+                    _ => {
+                        abort!(
+                            attribute,
+                            "wrong field configuration";
+                            help = "the filler configuration should be a char"
+                        )
+                    }
+                },
+            };
+
+            let align = match attrs.get("align") {
+                None => None,
+                Some(filler_align) => match filler_align {
+                    Lit::Str(lit_str) => Some(lit_str),
+                    _ => {
+                        abort!(
+                            attribute,
+                            "wrong field configuration";
+                            help = "the align configuration should be a string"
+                        )
+                    }
+                },
+            };
+
+            (size.clone(), filler.cloned(), align.cloned())
+        }
+        Err(_) => {
+            abort!(
+                attribute,
+                "wrong field configuration";
+                help = "unable to parse field configuration"
+            )
         }
     }
 }
 
-fn extract_option_type(ty: &syn::Type) -> Option<&syn::Type> {
-    use syn::{GenericArgument, Path, PathArguments, PathSegment};
-
-    fn extract_type_path(ty: &syn::Type) -> Option<&Path> {
-        match *ty {
-            syn::Type::Path(ref typepath) if typepath.qself.is_none() => Some(&typepath.path),
-            _ => None,
+fn parse_meta(meta: &syn::Meta, field: &syn::Field, attrs: &mut HashMap<String, syn::Lit>) {
+    match meta {
+        Meta::Path(path) => {
+            abort!(
+                path,
+                "wrong field configuration";
+                help = "there should only be name = value couple inside the field configuration"
+            )
+        }
+        Meta::List(meta_list) => {
+            for nested_meta in &meta_list.nested {
+                match nested_meta {
+                    NestedMeta::Meta(name_value) => parse_meta(name_value, field, attrs),
+                    NestedMeta::Lit(lit) => {
+                        abort!(
+                            lit,
+                            "wrong field configuration";
+                            help = "there should only be name = value couple inside the field configuration"
+                        )
+                    }
+                }
+            }
+        }
+        Meta::NameValue(name_value) => {
+            attrs.insert(
+                name_value.path.get_ident().unwrap().to_string(),
+                name_value.lit.clone(),
+            );
         }
     }
-
-    // TODO store (with lazy static) the vec of string
-    // TODO maybe optimization, reverse the order of segments
-    fn extract_option_segment(path: &Path) -> Option<&PathSegment> {
-        let idents_of_path = path.segments.iter().fold(String::new(), |mut acc, v| {
-            acc.push_str(&v.ident.to_string());
-            acc.push('|');
-            acc
-        });
-        vec!["Option|", "std|option|Option|", "core|option|Option|"]
-            .iter()
-            .find(|s| &idents_of_path == *s)
-            .and_then(|_| path.segments.last())
-    }
-
-    extract_type_path(ty)
-        .and_then(extract_option_segment)
-        .and_then(|path_seg| {
-            let type_params = &path_seg.arguments;
-            // It should have only on angle-bracketed param ("<String>"):
-            match *type_params {
-                PathArguments::AngleBracketed(ref params) => params.args.first(),
-                _ => None,
-            }
-        })
-        .and_then(|generic_arg| match *generic_arg {
-            GenericArgument::Type(ref ty) => Some(ty),
-            _ => None,
-        })
 }

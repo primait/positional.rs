@@ -48,7 +48,7 @@ pub fn codegen(ir: Ir, impl_block_type: ImplBlockType) -> Rust {
 }
 
 fn generate_to_field(field: &Field) -> TokenStream {
-    let field_ident = field.ident.ident.as_ref().unwrap();
+    let field_ident = &field.ident;
     let size = field.attributes.size;
     let filler = field.attributes.filler;
     let align = &field.attributes.align;
@@ -64,7 +64,7 @@ fn generate_to_field(field: &Field) -> TokenStream {
 }
 
 fn generate_from_field(field: &Field, offset: usize) -> TokenStream {
-    let field_ident = field.ident.ident.as_ref().unwrap();
+    let field_ident = &field.ident;
     let size = field.attributes.size;
     let filler = field.attributes.filler;
     let align = &field.attributes.align;
