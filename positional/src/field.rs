@@ -20,7 +20,7 @@ pub struct PositionalField {
     value: String,
     size: usize,
     filler: char,
-    align_left: bool,
+    alignment: Alignment,
 }
 
 impl PositionalField {
@@ -28,26 +28,24 @@ impl PositionalField {
         value: Option<&T>,
         size: usize,
         filler: char,
-        align_left: bool,
+        left_aligned: bool,
     ) -> Self {
         Self {
             value: value.map(|v| v.to_positional_field()).unwrap_or_default(),
             size,
             filler,
-            align_left,
+            alignment: if left_aligned {
+                Alignment::Left
+            } else {
+                Alignment::Right
+            },
         }
     }
 }
 
 impl ToString for PositionalField {
     fn to_string(&self) -> String {
-        let alignment: Alignment = if self.align_left {
-            Alignment::Left
-        } else {
-            Alignment::Right
-        };
-
-        self.value.pad(self.size, self.filler, alignment, true)
+        self.value.pad(self.size, self.filler, self.alignment, true)
     }
 }
 

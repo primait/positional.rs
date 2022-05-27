@@ -11,11 +11,11 @@ use crate::Ast;
 
 pub struct Model {
     pub container_identity: syn::Ident,
-    pub fields2: Vec<Field>,
+    pub fields: Vec<Field>,
 }
 
 pub fn analyze(ast: Ast) -> Model {
-    let fields2 = match ast.data {
+    let fields = match ast.data {
         Data::Struct(DataStruct {
             fields: Fields::Unnamed(ref fields_unnamed),
             ..
@@ -58,6 +58,6 @@ pub fn analyze(ast: Ast) -> Model {
     Model {
         container_identity: ast.ident,
 
-        fields2,
+        fields,
     }
 }
