@@ -26,7 +26,7 @@ pub struct RowAttributes {
 
 pub fn lower(model: Model) -> Ir {
     let mut fields: Vec<Field> = vec![];
-    for model_field in model.fields2 {
+    for model_field in model.fields {
         fields.push(Field {
             ident: model_field.field.ident.unwrap(),
             optional: extract_option_type(&model_field.field.ty).is_some(),

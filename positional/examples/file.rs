@@ -31,16 +31,16 @@ enum Beatles {
     Ringo(RingoData),
 }
 
-impl ToPositionalRow for Beatles {
-    fn to_positional_row(&self) -> String {
-        match self {
-            Beatles::John(john) => john.to_positional_row(),
-            Beatles::Paul(paul) => paul.to_positional_row(),
-            Beatles::George(george) => george.to_positional_row(),
-            Beatles::Ringo(ringo) => ringo.to_positional_row(),
-        }
-    }
-}
+// impl ToPositionalRow for Beatles {
+//     fn to_positional_row(&self) -> String {
+//         match self {
+//             Beatles::John(john) => john.to_positional_row(),
+//             Beatles::Paul(paul) => paul.to_positional_row(),
+//             Beatles::George(george) => george.to_positional_row(),
+//             Beatles::Ringo(ringo) => ringo.to_positional_row(),
+//         }
+//     }
+// }
 
 fn main() {
     let john = Beatles::John(JohnData {
