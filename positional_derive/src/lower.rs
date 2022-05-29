@@ -32,6 +32,7 @@ pub struct RowAttributes {
 pub fn lower(model: Model) -> Ir {
     match model {
         Model::Struct(struct_model) => Ir::Struct(lower_struct(struct_model)),
+        Model::Enum(_) => unimplemented!(),
     }
 }
 
