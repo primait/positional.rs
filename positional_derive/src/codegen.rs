@@ -1,11 +1,17 @@
-use crate::struct_impl::lower::{Field, Ir};
-use crate::struct_impl::ImplBlockType;
+use crate::lower::{Field, Ir, StructIr};
+use crate::ImplBlockType;
 use proc_macro2::TokenStream;
 use quote::quote;
 
 pub type Rust = TokenStream;
 
 pub fn codegen(ir: Ir, impl_block_type: ImplBlockType) -> Rust {
+    match ir {
+        Ir::Struct(struct_ir) => codegen_struct(struct_ir, impl_block_type),
+    }
+}
+
+fn codegen_struct(ir: StructIr, impl_block_type: ImplBlockType) -> Rust {
     let container_identity = ir.container_identity;
 
     let mut fields_stream = vec![];

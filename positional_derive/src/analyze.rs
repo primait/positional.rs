@@ -9,13 +9,17 @@ pub use field_alignment::FieldAlignment;
 use super::analyze::field::Field;
 use crate::Ast;
 
-pub struct Model {
+pub enum Model {
+    Struct(StructModel),
+}
+
+pub struct StructModel {
     pub container_identity: syn::Ident,
     pub fields: Vec<Field>,
 }
 
 pub fn analyze(ast: Ast) -> Model {
-    let fields = match ast.data {
+    match ast.data {
         Data::Struct(DataStruct {
             fields: Fields::Unnamed(ref fields_unnamed),
             ..
@@ -46,18 +50,18 @@ pub fn analyze(ast: Ast) -> Model {
         Data::Struct(DataStruct {
             fields: Fields::Named(fields_named),
             ..
-        }) => fields_named
-            .named
-            .into_iter()
-            .filter_map(Field::new)
-            .collect(),
+        }) => {
+            let fields = fields_named
+                .named
+                .into_iter()
+                .filter_map(Field::new)
+                .collect();
+            Model::Struct(StructModel {
+                container_identity: ast.ident,
+                fields,
+            })
+        }
         // this is blocked at the parsing phase
         Data::Union(_) => unreachable!(),
-    };
-
-    Model {
-        container_identity: ast.ident,
-
-        fields,
     }
 }
