@@ -1,8 +1,13 @@
 use super::analyze::FieldAlignment;
 use super::analyze::Model;
+use crate::analyze::StructModel;
 use proc_macro_error::abort;
 
-pub struct Ir {
+pub enum Ir {
+    Struct(StructIr),
+}
+
+pub struct StructIr {
     pub container_identity: syn::Ident,
     pub fields: Vec<Field>,
 }
@@ -25,6 +30,12 @@ pub struct RowAttributes {
 }
 
 pub fn lower(model: Model) -> Ir {
+    match model {
+        Model::Struct(struct_model) => Ir::Struct(lower_struct(struct_model)),
+    }
+}
+
+fn lower_struct(model: StructModel) -> StructIr {
     let mut fields: Vec<Field> = vec![];
     for model_field in model.fields {
         fields.push(Field {
@@ -63,7 +74,7 @@ pub fn lower(model: Model) -> Ir {
         })
     }
 
-    Ir {
+    StructIr {
         container_identity: model.container_identity,
         fields,
     }
