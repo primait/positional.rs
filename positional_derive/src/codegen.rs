@@ -1,4 +1,7 @@
-use crate::lower::{Field, Ir, StructIr};
+use crate::lower::{
+    from_struct::{Field, StructIr},
+    Ir,
+};
 use crate::ImplBlockType;
 use proc_macro2::TokenStream;
 use quote::quote;
