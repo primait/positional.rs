@@ -11,11 +11,17 @@ use crate::Ast;
 
 pub enum Model {
     Struct(StructModel),
+    Enum(EnumModel),
 }
 
 pub struct StructModel {
     pub container_identity: syn::Ident,
     pub fields: Vec<Field>,
+}
+
+pub struct EnumModel {
+    pub container_identity: syn::Ident,
+    pub variants: Vec<syn::Variant>,
 }
 
 pub fn analyze(ast: Ast) -> Model {
@@ -40,12 +46,12 @@ pub fn analyze(ast: Ast) -> Model {
                 help = "`#[derive(ToPositionalRow)]` can only be used on structs with named fields, this is a unit struct"
             )
         }
-        Data::Enum(_) => {
-            abort!(
-                ast,
-                "only structs with named fields";
-                help = "`#[derive(ToPositionalRow)]` can only be used on structs with named fields, this is an enum"
-            )
+        Data::Enum(data_enum) => {
+            let variants = data_enum.variants.into_iter().collect();
+            Model::Enum(EnumModel {
+                container_identity: ast.ident,
+                variants,
+            })
         }
         Data::Struct(DataStruct {
             fields: Fields::Named(fields_named),
