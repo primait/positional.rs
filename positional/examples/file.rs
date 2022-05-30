@@ -2,34 +2,39 @@
 
 use positional::*;
 
-#[derive(ToPositionalRow)]
+#[derive(FromPositionalRow)]
 struct JohnData {
     #[field(size = 10)]
     name: String,
 }
 
-#[derive(ToPositionalRow)]
+#[derive(FromPositionalRow)]
 struct PaulData {
     #[field(size = 10)]
     name: String,
 }
 
-#[derive(ToPositionalRow)]
+#[derive(FromPositionalRow)]
 struct GeorgeData {
     #[field(size = 10)]
     name: String,
 }
 
-#[derive(ToPositionalRow)]
+#[derive(FromPositionalRow)]
 struct RingoData {
     #[field(size = 10)]
     name: String,
 }
 
+#[derive(FromPositionalRow)]
 enum Beatles {
+    #[matcher(self[0..=3] == "john")]
     John(JohnData),
+    #[matcher(self[0..=3] == "paul")]
     Paul(PaulData),
+    #[matcher(self[0..=3] == "george")]
     George(GeorgeData),
+    #[matcher(self[0..=3] == "ringo")]
     Ringo(RingoData),
 }
 
