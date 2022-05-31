@@ -1,0 +1,8 @@
+error: matcher missing
+
+         = help: You need to define a matcher for every enum variant. Like #[matcher(self[0..3] == "00")]
+
+ --> tests/ui/enums-without-matcher.rs:5:5
+  |
+5 |     Row1(String),
+  |     ^^^^^^^^^^^^

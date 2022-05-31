@@ -13,11 +13,12 @@ fn can_extract_structs() {
     assert!(matches!(model, Model::Struct(_)));
 }
 
-//#[test]
+#[test]
 fn can_extract_enums() {
     let model = analyze(parse_quote!(
-        #[derive(ToPositionalRow)]
+        #[derive(FromPositionalRow)]
         enum EnumData {
+            #[matcher(&row_string[0..=3] == "0000")]
             Row1(RowData1),
         }
     ));
