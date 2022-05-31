@@ -13,6 +13,7 @@ use parse::{parse, Ast};
 
 /// Add to structs to make them deserializable from positional rows
 #[proc_macro_derive(FromPositionalRow, attributes(field, matcher))]
+#[proc_macro_error]
 pub fn from_positional_row(tokens: TokenStream) -> TokenStream {
     let ast = parse(tokens.into());
     let model = analyze(ast);

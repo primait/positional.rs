@@ -5,10 +5,10 @@ mod field;
 mod field_alignment;
 mod variant;
 
-use super::analyze::field::Field;
-use crate::analyze::variant::Variant;
+use crate::analyze::{field::Field, variant::Variant};
 use crate::Ast;
 pub use field_alignment::FieldAlignment;
+pub use variant::Matcher;
 
 #[cfg(test)]
 #[path = "./test/analyze.rs"]

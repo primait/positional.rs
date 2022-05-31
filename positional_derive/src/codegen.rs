@@ -1,4 +1,5 @@
 use crate::lower::{
+    from_enum::EnumIr,
     from_struct::{Field, StructIr},
     Ir,
 };
@@ -11,6 +12,46 @@ pub type Rust = TokenStream;
 pub fn codegen(ir: Ir, impl_block_type: ImplBlockType) -> Rust {
     match ir {
         Ir::Struct(struct_ir) => codegen_struct(struct_ir, impl_block_type),
+        Ir::Enum(enum_ir) => codegen_enum(enum_ir, impl_block_type),
+    }
+}
+
+fn codegen_enum(ir: EnumIr, impl_block_type: ImplBlockType) -> Rust {
+    let container_identity = ir.container_identity;
+
+    let mut variants_stream = vec![];
+    for variant in ir.variants {
+        let expr = variant.matcher.expr;
+        let ident = variant.ident.ident;
+        let sub_variant = variant.sub_variant_type;
+        let stream = match impl_block_type {
+            ImplBlockType::From => {
+                quote! {
+                    if #expr {
+                        return Ok(Self::#ident(#sub_variant::parse(row)?));
+                    }
+                }
+            }
+            ImplBlockType::To => quote! {},
+        };
+        variants_stream.push(stream);
+    }
+
+    match impl_block_type {
+        ImplBlockType::From => {
+            quote! {
+                impl FromPositionalRow for #container_identity {
+                    fn parse(row: impl ToString) -> Result<Self, Box<dyn std::error::Error>> where Self: Sized {
+                        let row_string = row.to_string();
+                        #(#variants_stream)*
+                        Err(Box::new(positional::PositionalError::UnparsableFile))
+                    }
+                }
+            }
+        }
+        ImplBlockType::To => {
+            quote! {}
+        }
     }
 }
 

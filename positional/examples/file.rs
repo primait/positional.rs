@@ -2,56 +2,55 @@
 
 use positional::*;
 
-#[derive(FromPositionalRow)]
+#[derive(Debug, PartialEq, FromPositionalRow)]
 struct JohnData {
     #[field(size = 10)]
     name: String,
 }
 
-#[derive(FromPositionalRow)]
+#[derive(Debug, PartialEq, FromPositionalRow)]
 struct PaulData {
     #[field(size = 10)]
     name: String,
 }
 
-#[derive(FromPositionalRow)]
+#[derive(Debug, PartialEq, FromPositionalRow)]
 struct GeorgeData {
     #[field(size = 10)]
     name: String,
 }
 
-#[derive(FromPositionalRow)]
+#[derive(Debug, PartialEq, FromPositionalRow)]
 struct RingoData {
     #[field(size = 10)]
     name: String,
 }
 
-#[derive(FromPositionalRow)]
+#[derive(Debug, PartialEq, FromPositionalRow)]
 enum Beatles {
-    #[matcher(self[0..=3] == "john")]
+    #[matcher(&row_string[0..=3] == "john")]
     John(JohnData),
-    #[matcher(self[0..=3] == "paul")]
+    #[matcher(&row_string[0..=3] == "paul")]
     Paul(PaulData),
-    #[matcher(self[0..=3] == "george")]
+    #[matcher(&row_string[0..=3] == "george")]
     George(GeorgeData),
-    #[matcher(self[0..=3] == "ringo")]
+    #[matcher(&row_string[0..=3] == "ringo")]
     Ringo(RingoData),
 }
 
-// impl ToPositionalRow for Beatles {
-//     fn to_positional_row(&self) -> String {
-//         match self {
-//             Beatles::John(john) => john.to_positional_row(),
-//             Beatles::Paul(paul) => paul.to_positional_row(),
-//             Beatles::George(george) => george.to_positional_row(),
-//             Beatles::Ringo(ringo) => ringo.to_positional_row(),
-//         }
-//     }
-// }
-
 fn main() {
-    let _john = Beatles::John(JohnData {
+    let john_data = Beatles::John(JohnData {
         name: "john".to_string(),
     });
-    //assert_eq!("john      ", john.to_positional_row());
+    let paul_data = Beatles::Paul(PaulData {
+        name: "paul".to_string(),
+    });
+    let row_john = "john      ";
+    let row_paul = "paul      ";
+
+    let row_wrong = "xxxx      ";
+
+    assert_eq!(Beatles::parse(row_john).unwrap(), john_data);
+    assert_eq!(Beatles::parse(row_paul).unwrap(), paul_data);
+    assert!(Beatles::parse(row_wrong).is_err());
 }

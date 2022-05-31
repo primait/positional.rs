@@ -1,0 +1,9 @@
+error: wrong enum variant
+
+         = help: Only one unnamed field (implementing the relative ToPositionalRow/ToPositionalRow trait) is accepted
+
+ --> tests/ui/enums-with-multiple-named-variants.rs:5:5
+  |
+5 | /     #[matcher(row[0..3] == "11")]
+6 | |     Row1(String, String),
+  | |________________________^
