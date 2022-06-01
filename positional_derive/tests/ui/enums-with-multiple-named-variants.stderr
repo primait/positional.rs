@@ -4,6 +4,6 @@ error: wrong enum variant
 
  --> tests/ui/enums-with-multiple-named-variants.rs:5:5
   |
-5 | /     #[matcher(row[0..3] == "11")]
+5 | /     #[matcher(row[0..2] == "11")]
 6 | |     Row1(String, String),
   | |________________________^

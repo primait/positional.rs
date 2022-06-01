@@ -1,6 +1,6 @@
 error: matcher missing
 
-         = help: You need to define a matcher for every enum variant. Like #[matcher(row[0..3] == "00")]
+         = help: You need to define a matcher for every enum variant. Like #[matcher(row[0..2] == "00")]
 
  --> tests/ui/enums-without-matcher.rs:5:5
   |
