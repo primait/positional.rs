@@ -49,7 +49,7 @@ impl Variant {
                         abort!(
                             variant,
                             "matcher missing";
-                            help = "You need to define a matcher for every enum variant. Like #[matcher(self[0..3] == \"00\")]"
+                            help = "You need to define a matcher for every enum variant. Like #[matcher(row[0..2] == \"00\")]"
                         )
                     }
                     Some(matcher) => Some(Self {
@@ -71,7 +71,7 @@ fn parse_variant_attributes(variant: &syn::Variant) -> Option<Matcher> {
         .attrs
         .iter()
         .find(|attribute| attribute.path.is_ident(MATCHER_ATTRIBUTE))
-        .map(|attribute| parse_matcher_expression(attribute))
+        .map(parse_matcher_expression)
 }
 
 fn parse_matcher_expression(attribute: &syn::Attribute) -> Matcher {
@@ -82,7 +82,7 @@ fn parse_matcher_expression(attribute: &syn::Attribute) -> Matcher {
         abort!(
             span,
             "expected an expression as matcher";
-            help = "example syntax: `#[matcher(self[0..3] == \"00\")]`"
+            help = "example syntax: `#[matcher(row[0..2] == \"00\")]`"
         )
     }
 }

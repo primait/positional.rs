@@ -1,6 +1,6 @@
 error: expected an expression as matcher
 
-         = help: example syntax: `#[matcher(self[0..3] == "00")]`
+         = help: example syntax: `#[matcher(row[0..3] == "00")]`
 
  --> tests/ui/enums-with-wrong-matcher.rs:5:14
   |

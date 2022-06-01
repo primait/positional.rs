@@ -2,43 +2,44 @@
 
 use positional::*;
 
-#[derive(Debug, PartialEq, FromPositionalRow)]
+#[derive(Debug, PartialEq, FromPositionalRow, ToPositionalRow)]
 struct JohnData {
     #[field(size = 10)]
     name: String,
 }
 
-#[derive(Debug, PartialEq, FromPositionalRow)]
+#[derive(Debug, PartialEq, FromPositionalRow, ToPositionalRow)]
 struct PaulData {
     #[field(size = 10)]
     name: String,
 }
 
-#[derive(Debug, PartialEq, FromPositionalRow)]
+#[derive(Debug, PartialEq, FromPositionalRow, ToPositionalRow)]
 struct GeorgeData {
     #[field(size = 10)]
     name: String,
 }
 
-#[derive(Debug, PartialEq, FromPositionalRow)]
+#[derive(Debug, PartialEq, FromPositionalRow, ToPositionalRow)]
 struct RingoData {
     #[field(size = 10)]
     name: String,
 }
 
-#[derive(Debug, PartialEq, FromPositionalRow)]
+#[derive(Debug, PartialEq, FromPositionalRow, ToPositionalRow)]
 enum Beatles {
-    #[matcher(&row_string[0..=3] == "john")]
+    #[matcher(&row[0..=3] == "john")]
     John(JohnData),
-    #[matcher(&row_string[0..=3] == "paul")]
+    #[matcher(&row[0..=3] == "paul")]
     Paul(PaulData),
-    #[matcher(&row_string[0..=3] == "george")]
+    #[matcher(&row[0..=3] == "george")]
     George(GeorgeData),
-    #[matcher(&row_string[0..=3] == "ringo")]
+    #[matcher(&row[0..=3] == "ringo")]
     Ringo(RingoData),
 }
 
 fn main() {
+    // Parsing
     let john_data = Beatles::John(JohnData {
         name: "john".to_string(),
     });
@@ -53,4 +54,8 @@ fn main() {
     assert_eq!(Beatles::parse(row_john).unwrap(), john_data);
     assert_eq!(Beatles::parse(row_paul).unwrap(), paul_data);
     assert!(Beatles::parse(row_wrong).is_err());
+
+    // Serializing
+    let writer = Writer::new(vec![john_data, paul_data]);
+    assert_eq!("john      \npaul      ", writer.to_string());
 }
