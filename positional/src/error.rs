@@ -4,8 +4,10 @@ use thiserror::Error;
 pub type PositionalResult<T> = Result<T, PositionalError>;
 
 /// library error type
-#[derive(Error, Debug)]
+#[derive(Error, Debug, PartialEq)]
 pub enum PositionalError {
-    #[error("unparsable file")]
+    #[error("Unable to parse the file")]
     UnparsableFile,
+    #[error("Unable to find a matcher for row `{0}`")]
+    UnmatchedVariant(String),
 }

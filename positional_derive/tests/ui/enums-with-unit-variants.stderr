@@ -1,0 +1,8 @@
+error: wrong enum variant
+
+         = help: unit variants are not supported
+
+ --> tests/ui/enums-with-unit-variants.rs:5:5
+  |
+5 |     Row1,
+  |     ^^^^

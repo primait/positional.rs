@@ -13,7 +13,6 @@ pub struct Field {
 
 impl Field {
     pub fn new(field: syn::Field) -> Option<Self> {
-        // it is safe to unwrap here, since we know this is a named field
         parse_field_attributes(&field).map(|(size, filler, align)| Self {
             field,
             size,

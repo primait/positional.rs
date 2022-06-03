@@ -3,11 +3,16 @@ use syn::{Data, DataStruct, Fields};
 
 mod field;
 mod field_alignment;
+mod variant;
 
-pub use field_alignment::FieldAlignment;
-
-use super::analyze::field::Field;
+use crate::analyze::{field::Field, variant::Variant};
 use crate::Ast;
+pub use field_alignment::FieldAlignment;
+pub use variant::Matcher;
+
+#[cfg(test)]
+#[path = "./test/analyze.rs"]
+mod analyze_test;
 
 pub enum Model {
     Struct(StructModel),
@@ -21,7 +26,7 @@ pub struct StructModel {
 
 pub struct EnumModel {
     pub container_identity: syn::Ident,
-    pub variants: Vec<syn::Variant>,
+    pub variants: Vec<Variant>,
 }
 
 pub fn analyze(ast: Ast) -> Model {
@@ -47,7 +52,14 @@ pub fn analyze(ast: Ast) -> Model {
             )
         }
         Data::Enum(data_enum) => {
-            let variants = data_enum.variants.into_iter().collect();
+            let mut variants = vec![];
+            for syn_variant in data_enum.variants {
+                match Variant::new(syn_variant.clone()) {
+                    None => abort!(syn_variant, "only enum variants with one unnamed field"),
+                    Some(v) => variants.push(v),
+                }
+            }
+
             Model::Enum(EnumModel {
                 container_identity: ast.ident,
                 variants,

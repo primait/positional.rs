@@ -15,6 +15,10 @@ harness = false
 name = "write_to_file"
 harness = false
 
+[[bench]]
+name = "enum"
+harness = false
+
 [dependencies]
 positional_derive = { version = "=0.1.1", path = "../positional_derive" }
 quote = "1.0"

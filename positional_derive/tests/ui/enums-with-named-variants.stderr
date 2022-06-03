@@ -1,0 +1,8 @@
+error: wrong enum variant
+
+         = help: named variants are not supported
+
+ --> tests/ui/enums-with-named-variants.rs:5:5
+  |
+5 |     Row1 { name: String },
+  |     ^^^^^^^^^^^^^^^^^^^^^
