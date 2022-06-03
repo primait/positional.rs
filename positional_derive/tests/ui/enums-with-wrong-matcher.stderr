@@ -1,0 +1,8 @@
+error: expected an expression as matcher
+
+         = help: example syntax: `#[matcher(row[0..2] == "00")]`
+
+ --> tests/ui/enums-with-wrong-matcher.rs:5:14
+  |
+5 |     #[matcher(struct)]
+  |              ^^^^^^^^

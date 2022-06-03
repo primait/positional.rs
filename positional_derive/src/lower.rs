@@ -1,11 +1,14 @@
+pub mod from_enum;
 pub mod from_struct;
 
 use super::analyze::Model;
 
+use from_enum::{lower_enum, EnumIr};
 use from_struct::{lower_struct, StructIr};
 
 pub enum Ir {
     Struct(StructIr),
+    Enum(EnumIr),
 }
 
 pub enum ImplBlockType {
@@ -16,7 +19,7 @@ pub enum ImplBlockType {
 pub fn lower(model: Model) -> Ir {
     match model {
         Model::Struct(struct_model) => Ir::Struct(lower_struct(struct_model)),
-        Model::Enum(_) => unimplemented!(),
+        Model::Enum(enum_model) => Ir::Enum(lower_enum(enum_model)),
     }
 }
 
