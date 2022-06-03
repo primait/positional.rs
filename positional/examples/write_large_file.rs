@@ -1,9 +1,8 @@
 use chrono::{DateTime, Utc};
 use fake::{Dummy, Fake, Faker};
 use positional::*;
-use std::fs::File;
 
-#[derive(ToPositionalRow, FromPositionalRow, Dummy, Debug)]
+#[derive(ToPositionalRow, Dummy, Debug)]
 struct Data {
     #[field(size = 25)]
     name: String,
@@ -20,10 +19,9 @@ struct Data {
 
 pub fn main() {
     let mut rows: Vec<Data> = vec![];
-    for _ in 1..=100 {
+    for _ in 1..=1_000_000 {
         rows.push(Faker.fake())
     }
     let positional_file = Writer::new(rows);
-    let output = positional_file.to_string();
-    println!("{}", &output);
+    std::fs::write("output.txt", positional_file.to_string()).unwrap();
 }

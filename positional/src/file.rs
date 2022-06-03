@@ -5,6 +5,8 @@ use std::fmt::{Display, Formatter};
 use std::ops::ControlFlow;
 use std::str::FromStr;
 
+pub mod reader;
+
 /// a positional file writer
 pub struct Writer<T: ToPositionalRow> {
     rows: Vec<T>,
