@@ -64,6 +64,8 @@
 //!
 //! Fields are not limited to simple types like `String` or `i32`, you can use any type as long as
 //! it implements the trait `FromStr` for parsing and `ToString` for serializing.
+//! For the ToString implementation the library will take care of fill and trim the values for
+//! the positional representation. You just need to take care of converting the value to a string.
 //!
 //! # Files with multiple row types
 //!
