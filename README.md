@@ -2,3 +2,4 @@
 
 This is a library for authoring and parsing positional files
 
+[RustDoc](https://docs.rs/positional)
