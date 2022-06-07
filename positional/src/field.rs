@@ -1,5 +1,7 @@
 use pad::{Alignment, PadStr};
 
+#[doc(hidden)]
+
 /// a trait to represent a type that could be converted to a positional field
 ///
 /// There is a generic implementation for types that implements Display
@@ -14,6 +16,7 @@ impl<T: ToString + ?Sized> ToPositionalField for T {
     }
 }
 
+#[doc(hidden)]
 /// a single field ready to be serialized in a positional row
 #[derive(Debug)]
 pub struct PositionalField {
