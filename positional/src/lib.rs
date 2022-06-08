@@ -35,15 +35,23 @@
 //! ```
 //! use positional::*;
 //!
-//! #[derive(FromPositionalRow)]
+//! #[derive(FromPositionalRow, PartialEq, Debug)]
 //! struct RowData {
-//!     #[field(size = 20)]
+//!     #[field(size = 10)]
 //!     name: String,
-//!     #[field(size = 20, filler = '-')]
+//!     #[field(size = 10, filler = '-')]
 //!     surname: String,
-//!     #[field(size = 20, align = "right")]
+//!     #[field(size = 5, align = "right")]
 //!     age: i32,
 //! }
+//!
+//! let row_data = RowData {
+//!     name: "test".to_string(),
+//!     surname: "test".to_string(),
+//!     age: 20,
+//! };
+//!
+//! assert_eq!(RowData::parse("test      test------   20").unwrap(), row_data);
 //! ```
 //!
 //! You can use both on the same struct if that makes sense in your domain model.
