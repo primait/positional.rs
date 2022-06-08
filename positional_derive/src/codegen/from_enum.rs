@@ -11,7 +11,7 @@ pub fn codegen_enum(ir: EnumIr, impl_block_type: ImplBlockType) -> Rust {
             let variants_stream = create_variants_for_from_positional_row(ir.variants.as_slice());
             quote! {
                 impl FromPositionalRow for #container_identity {
-                    fn parse(row: impl ToString) -> Result<Self, Box<dyn std::error::Error>> where Self: Sized {
+                    fn from_positional_row(row: impl ToString) -> Result<Self, Box<dyn std::error::Error>> where Self: Sized {
                         let row = row.to_string();
                         #(#variants_stream)*
                         Err(Box::new(positional::PositionalError::UnparsableFile))
@@ -42,7 +42,7 @@ fn create_variants_for_from_positional_row(variants: &[Variant]) -> Vec<proc_mac
         let sub_variant = variant.sub_variant_type.clone();
         let stream = quote! {
             if #expr {
-                return Ok(Self::#ident(#sub_variant::parse(row)?));
+                return Ok(Self::#ident(#sub_variant::from_positional_row(row)?));
             }
         };
         variants_stream.push(stream);

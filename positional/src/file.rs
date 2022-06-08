@@ -34,15 +34,17 @@ impl<T: FromPositionalRow> FromStr for Reader<T> {
     type Err = PositionalError;
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
-        let rows = s.lines().try_fold(vec![], |mut acc, line| {
-            match FromPositionalRow::parse(line) {
-                Ok(row) => {
-                    acc.push(row);
-                    ControlFlow::Continue(acc)
-                }
-                Err(error) => ControlFlow::Break(error),
-            }
-        });
+        let rows =
+            s.lines().try_fold(
+                vec![],
+                |mut acc, line| match FromPositionalRow::from_positional_row(line) {
+                    Ok(row) => {
+                        acc.push(row);
+                        ControlFlow::Continue(acc)
+                    }
+                    Err(error) => ControlFlow::Break(error),
+                },
+            );
         match rows {
             ControlFlow::Continue(rows) => Ok(Self { rows }),
             ControlFlow::Break(_) => Err(PositionalError::UnparsableFile),

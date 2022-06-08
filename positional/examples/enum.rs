@@ -51,9 +51,9 @@ fn main() {
 
     let row_wrong = "xxxx      ";
 
-    assert_eq!(Beatles::parse(row_john).unwrap(), john_data);
-    assert_eq!(Beatles::parse(row_paul).unwrap(), paul_data);
-    assert!(Beatles::parse(row_wrong).is_err());
+    assert_eq!(Beatles::from_positional_row(row_john).unwrap(), john_data);
+    assert_eq!(Beatles::from_positional_row(row_paul).unwrap(), paul_data);
+    assert!(Beatles::from_positional_row(row_wrong).is_err());
 
     // Serializing
     let writer = Writer::new(vec![john_data, paul_data]);

@@ -51,7 +51,7 @@
 //!     age: 20,
 //! };
 //!
-//! assert_eq!(RowData::parse("test      test------   20").unwrap(), row_data);
+//! assert_eq!(RowData::from_positional_row("test      test------   20").unwrap(), row_data);
 //! ```
 //!
 //! You can use both on the same struct if that makes sense in your domain model.

@@ -22,7 +22,7 @@ impl Data {
 
 #[test]
 fn parse() {
-    let row = FromPositionalRow::parse("1    ---10the address is this ")
+    let row = FromPositionalRow::from_positional_row("1    ---10the address is this ")
         .expect("error converting from positional row");
     assert_eq!(Data::new(1, 10, "the address is this"), row);
 }
@@ -32,6 +32,6 @@ fn ser_de() {
     let data = Data::new(1, 100, "the address is this");
     let row = data.to_positional_row();
     let original_data: Data =
-        FromPositionalRow::parse(row).expect("error converting from positional row");
+        FromPositionalRow::from_positional_row(row).expect("error converting from positional row");
     assert_eq!(original_data, data);
 }

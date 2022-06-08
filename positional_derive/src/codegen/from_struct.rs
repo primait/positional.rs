@@ -26,7 +26,7 @@ pub fn codegen_struct(ir: StructIr, impl_block_type: ImplBlockType) -> Rust {
         ImplBlockType::From => {
             quote! {
                 impl FromPositionalRow for #container_identity {
-                    fn parse(row: impl ToString) -> Result<Self, Box<dyn std::error::Error>> where Self: Sized {
+                    fn from_positional_row(row: impl ToString) -> Result<Self, Box<dyn std::error::Error>> where Self: Sized {
                         let row_string = row.to_string();
                         Ok(Self {
                             #(#fields_stream),*
