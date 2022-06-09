@@ -24,13 +24,20 @@ export ENV=$1
 export AWS_DEFAULT_REGION="eu-west-1"
 export VERSION="${DRONE_TAG:-$DRONE_COMMIT_SHA}"
 
-version=$(grep -m1 version Cargo.toml | cut -d'"' -f2)
+positional_version=$(grep -m1 version positional/Cargo.toml | cut -d'"' -f2)
+positional_derive_version=$(grep -m1 version positional_derive/Cargo.toml | cut -d'"' -f2)
 
-if [[ "$DRONE_TAG" != "$version" ]]; then
-  echo "Package version $version does not match release version $DRONE_TAG"
+if [[ "$DRONE_TAG" != "$positional_version" ]]; then
+  echo "positional version $positional_version does not match release version $DRONE_TAG"
+  exit 1
+fi
+
+if [[ "$DRONE_TAG" != "$positional_derive_version" ]]; then
+  echo "positional_derive version $positional_derive_version does not match release version $DRONE_TAG"
   exit 1
 fi
 
 git checkout .
 cargo login "$CARGO_AUTH_KEY"
-cargo publish --all-features
+cargo publish -p positional
+cargo publish -p positional_derive
