@@ -1,0 +1,24 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+spec:
+  type: library
+  lifecycle: production
+  owner: team-shared-services
+  system: prima.it
+metadata:
+  name: positional.rs
+  description: A library to write/parse positional files in Rust
+  tags:
+    - rust
+  links:
+    - url: https://crates.io/crates/positional
+      icon: link
+      title: crates.io page
+
+    - url: https://docs.rs/positional
+      icon: link
+      title: official documentation
+
+    - url: https://github.com/primait/positional.rs
+      icon: github
+      title: github repository
