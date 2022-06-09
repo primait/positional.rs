@@ -39,5 +39,5 @@ fi
 
 git checkout .
 cargo login "$CARGO_AUTH_KEY"
-cargo publish -p positional
 cargo publish -p positional_derive
+cargo publish -p positional
