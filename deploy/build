@@ -26,6 +26,7 @@ export VERSION="${DRONE_TAG:-$DRONE_COMMIT_SHA}"
 
 positional_version=$(grep -m1 version positional/Cargo.toml | cut -d'"' -f2)
 positional_derive_version=$(grep -m1 version positional_derive/Cargo.toml | cut -d'"' -f2)
+current_remote_version=''
 
 if [[ "$DRONE_TAG" != "$positional_version" ]]; then
   echo "positional version $positional_version does not match release version $DRONE_TAG"
@@ -40,4 +41,11 @@ fi
 git checkout .
 cargo login "$CARGO_AUTH_KEY"
 cargo publish -p positional_derive
+
+while [ "$DRONE_TAG" != "$current_remote_version" ]
+do
+  current_remote_version=$(curl "https://crates.io/api/v1/crates/positional_derive/$DRONE_TAG" -s | jq '.version .num')
+  sleep 3
+done
+
 cargo publish -p positional
