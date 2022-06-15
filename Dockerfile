@@ -6,6 +6,8 @@ COPY entrypoint /code/entrypoint
 
 RUN groupadd -g 1000 app && \
     useradd -g 1000 -u 1000 --system --create-home app && \
+    apt-get update && \
+    apt-get install jq -y && \
     chown -R app:app /code && \
     cargo install cargo-make && \
     rustup component add clippy rustfmt
