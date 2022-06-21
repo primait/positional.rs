@@ -24,8 +24,8 @@ export ENV=$1
 export AWS_DEFAULT_REGION="eu-west-1"
 export VERSION="${DRONE_TAG:-$DRONE_COMMIT_SHA}"
 
-positional_version=$(grep -m1 version positional/Cargo.toml | cut -d'"' -f2)
-positional_derive_version=$(grep -m1 version positional_derive/Cargo.toml | cut -d'"' -f2)
+positional_version=$(grep -m1 '^version' positional/Cargo.toml | cut -d'"' -f2)
+positional_derive_version=$(grep -m1 '^version' positional_derive/Cargo.toml | cut -d'"' -f2)
 current_remote_version=''
 
 if [[ "$DRONE_TAG" != "$positional_version" ]]; then
