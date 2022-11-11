@@ -7,7 +7,7 @@ pub trait ToPositionalRow {
 
 /// implement this trait to mark something as parsable from a row of a positional file
 pub trait FromPositionalRow {
-    fn from_positional_row(row: impl ToString) -> Result<Self, Box<dyn Error>>
+    fn from_positional_row(row: &str) -> Result<Self, Box<dyn Error>>
     where
         Self: Sized;
 }
