@@ -26,8 +26,7 @@ pub fn codegen_struct(ir: StructIr, impl_block_type: ImplBlockType) -> Rust {
         ImplBlockType::From => {
             quote! {
                 impl FromPositionalRow for #container_identity {
-                    fn from_positional_row(row: impl ToString) -> Result<Self, Box<dyn std::error::Error>> where Self: Sized {
-                        let row_string = row.to_string();
+                    fn from_positional_row(row: &str) -> Result<Self, Box<dyn std::error::Error>> where Self: Sized {
                         Ok(Self {
                             #(#fields_stream),*
                         })
@@ -70,11 +69,11 @@ fn generate_from_field(field: &Field, offset: usize) -> TokenStream {
     let align = &field.attributes.align;
     if field.optional {
         quote! {
-            #field_ident: positional::PositionalParsedField::new(row.to_string(), #offset, #size, #filler, #align).to_value().parse().ok()
+            #field_ident: positional::PositionalParsedField::new(row, #offset, #size, #filler, #align).to_value().parse().ok()
         }
     } else {
         quote! {
-            #field_ident: positional::PositionalParsedField::new(row.to_string(), #offset, #size, #filler, #align).to_value().parse()?
+            #field_ident: positional::PositionalParsedField::new(row, #offset, #size, #filler, #align).to_value().parse()?
         }
     }
 }
