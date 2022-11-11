@@ -24,8 +24,8 @@ impl<'s> PositionalParsedField<'s> {
     /// trimming is done by the library based on the declared positional row configurations
     pub fn to_value(&self) -> &'s str {
         let slice_start = self.offset;
-        let slice_end = self.offset + self.size - 1;
-        let raw_value = &self.row[slice_start..=slice_end];
+        let slice_end = self.offset + self.size;
+        let raw_value = &self.row[slice_start..slice_end];
         if self.left_aligned {
             raw_value.trim_end_matches(self.filler)
         } else {
