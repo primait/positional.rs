@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### [Next]
 
+### [0.2.0]
+- `from_positional_row` now accepts `&str` instead of `impl ToString` and eliminates all internal allocations during parsing
+
 ### [0.1.3]
 - `parse` function from the FromPositionalRow trait has been renamed to `from_positional_row` for coherence with the counterpart
 
@@ -14,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - FromPositionalRow and ToPositionalRow macros are now applicable also to enums
 
 
-[Next]: https://github.com/primait/positional.rs/compare/0.1.3...HEAD
+[Next]: https://github.com/primait/positional.rs/compare/0.2.0...HEAD
+[0.2.0]: https://github.com/primait/positional.rs/compare/0.1.3...0.2.0
 [0.1.3]: https://github.com/primait/positional.rs/compare/0.1.2...0.1.3
 [0.1.2]: https://github.com/primait/positional.rs/compare/0.1.1...0.1.2
