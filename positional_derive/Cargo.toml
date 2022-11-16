@@ -1,17 +1,16 @@
 [package]
-name = "positional_derive"
-version = "0.2.0"
-edition = "2021"
 description = "macros for positional crate"
+edition = "2021"
 license = "MIT"
+name = "positional_derive"
+version = "0.2.1"
 
 [lib]
 proc-macro = true
 
 [dependencies]
-syn = { version = "1.0.95", features = ["extra-traits", "full"] }
-quote = "1.0"
-proc-macro2 = "1.0.39"
 proc-macro-error = "1.0.4"
+proc-macro2 = "1.0.39"
+quote = "1.0"
+syn = {version = "1.0.95", features = ["extra-traits", "full"]}
 trybuild = "1.0.61"
-
