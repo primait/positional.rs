@@ -4,7 +4,7 @@ use quote::ToTokens;
 use quote::TokenStreamExt;
 use std::str::FromStr;
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Eq)]
 pub enum FieldAlignment {
     Left,
     Right,

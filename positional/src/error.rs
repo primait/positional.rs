@@ -4,7 +4,7 @@ use thiserror::Error;
 pub type PositionalResult<T> = Result<T, PositionalError>;
 
 /// library error type
-#[derive(Error, Debug, PartialEq)]
+#[derive(Error, Debug, PartialEq, Eq)]
 pub enum PositionalError {
     #[error("Unable to parse the file")]
     UnparsableFile,
