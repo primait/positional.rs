@@ -39,13 +39,7 @@ if [[ "$DRONE_TAG" != "$positional_derive_version" ]]; then
 fi
 
 git checkout .
+
+cargo install cargo-release --version "0.23.*"
 cargo login "$CARGO_AUTH_KEY"
-cargo publish -p positional_derive
-
-while [ "$DRONE_TAG" != "$current_remote_version" ]
-do
-  current_remote_version=$(curl "https://crates.io/api/v1/crates/positional_derive/$DRONE_TAG" -s | jq -r '.version .num')
-  sleep 3
-done
-
-cargo publish -p positional
+cargo release publish --execute --no-confirm --allow-branch "*" --workspace --all-features
