@@ -1,3 +1,5 @@
+use crate::{PositionalResult, PositionalError};
+
 #[doc(hidden)]
 
 /// a single field ready to be parsed from a positional row
@@ -22,14 +24,14 @@ impl<'s> PositionalParsedField<'s> {
 
     /// output a string representation of the parsed value
     /// trimming is done by the library based on the declared positional row configurations
-    pub fn to_value(&self) -> &'s str {
+    pub fn to_value(&self) -> PositionalResult<&'s str> {
         let slice_start = self.offset;
         let slice_end = self.offset + self.size;
-        let raw_value = &self.row[slice_start..slice_end];
+        let raw_value = &self.row.get(slice_start..slice_end).ok_or(PositionalError::UnparsableFile)?;
         if self.left_aligned {
-            raw_value.trim_end_matches(self.filler)
+            Ok(raw_value.trim_end_matches(self.filler))
         } else {
-            raw_value.trim_start_matches(self.filler)
+            Ok(raw_value.trim_start_matches(self.filler))
         }
     }
 }

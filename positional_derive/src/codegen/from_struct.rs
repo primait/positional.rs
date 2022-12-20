@@ -69,11 +69,11 @@ fn generate_from_field(field: &Field, offset: usize) -> TokenStream {
     let align = &field.attributes.align;
     if field.optional {
         quote! {
-            #field_ident: positional::PositionalParsedField::new(row, #offset, #size, #filler, #align).to_value().parse().ok()
+            #field_ident: positional::PositionalParsedField::new(row, #offset, #size, #filler, #align).to_value()?.parse().ok()
         }
     } else {
         quote! {
-            #field_ident: positional::PositionalParsedField::new(row, #offset, #size, #filler, #align).to_value().parse()?
+            #field_ident: positional::PositionalParsedField::new(row, #offset, #size, #filler, #align).to_value()?.parse()?
         }
     }
 }

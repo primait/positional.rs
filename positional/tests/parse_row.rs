@@ -35,3 +35,9 @@ fn ser_de() {
         FromPositionalRow::from_positional_row(&row).expect("error converting from positional row");
     assert_eq!(original_data, data);
 }
+
+#[test]
+fn parse_of_empty_string_fails() {
+    let row = Data::from_positional_row("");
+    row.unwrap_err();
+}
