@@ -50,7 +50,7 @@ fn empty_string() {
 
 #[test]
 fn string_smaller_than_field_definition() {
-    let row_content = "1    ---10the address is this";
+    let row_content = "1    ---10";
     let row = <Data as FromPositionalRow>::from_positional_row(row_content);
     assert_eq!(
         row.err().map(|e| e.to_string()),
