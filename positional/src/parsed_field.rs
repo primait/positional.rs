@@ -28,6 +28,7 @@ impl<'s> PositionalParsedField<'s> {
         let slice_start = self.offset;
         let slice_end = self.offset + self.size;
         match self.row.get(slice_start..slice_end) {
+            // this should not happen, because we are checking for the row size in the main `from_positional_row` function.
             None => Err(PositionalError::FieldDefinitionError(
                 slice_start,
                 slice_end,
