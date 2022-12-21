@@ -30,7 +30,7 @@ impl Data {
 fn simple() {
     let rows = vec![Data::new(
         "the name".to_string(),
-        NaiveDate::from_ymd(2022, 1, 1),
+        NaiveDate::from_ymd_opt(2022, 1, 1).unwrap(),
     )];
     let positional_file: Writer<Data> = Writer::new(rows);
     assert_eq!(
