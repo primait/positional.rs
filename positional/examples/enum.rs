@@ -58,7 +58,10 @@ fn main() {
 
     assert_eq!(Beatles::from_positional_row(row_john).unwrap(), john_data);
     assert_eq!(Beatles::from_positional_row(row_paul).unwrap(), paul_data);
-    assert_eq!(Beatles::from_positional_row(row_george).unwrap(), george_data);
+    assert_eq!(
+        Beatles::from_positional_row(row_george).unwrap(),
+        george_data
+    );
     assert!(Beatles::from_positional_row(row_wrong).is_err());
 
     // Serializing

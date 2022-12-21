@@ -1,4 +1,4 @@
-use crate::{PositionalResult, PositionalError};
+use crate::{PositionalError, PositionalResult};
 
 #[doc(hidden)]
 
@@ -27,7 +27,10 @@ impl<'s> PositionalParsedField<'s> {
     pub fn to_value(&self) -> PositionalResult<&'s str> {
         let slice_start = self.offset;
         let slice_end = self.offset + self.size;
-        let raw_value = &self.row.get(slice_start..slice_end).ok_or(PositionalError::UnparsableFile)?;
+        let raw_value = &self
+            .row
+            .get(slice_start..slice_end)
+            .ok_or(PositionalError::UnparsableFile)?;
         if self.left_aligned {
             Ok(raw_value.trim_end_matches(self.filler))
         } else {
