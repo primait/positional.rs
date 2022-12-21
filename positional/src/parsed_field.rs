@@ -1,5 +1,3 @@
-use crate::{PositionalError, PositionalResult};
-
 #[doc(hidden)]
 
 /// a single field ready to be parsed from a positional row
@@ -24,23 +22,20 @@ impl<'s> PositionalParsedField<'s> {
 
     /// output a string representation of the parsed value
     /// trimming is done by the library based on the declared positional row configurations
-    pub fn to_value(&self) -> PositionalResult<&'s str> {
-        let slice_start = self.offset;
-        let slice_end = self.offset + self.size;
-        match self.row.get(slice_start..slice_end) {
-            // this should not happen, because we are checking for the row size in the main `from_positional_row` function.
-            None => Err(PositionalError::FieldDefinitionError(
-                slice_start,
-                slice_end,
-                self.row.to_string(),
-            )),
-            Some(raw_value) => {
-                if self.left_aligned {
-                    Ok(raw_value.trim_end_matches(self.filler))
-                } else {
-                    Ok(raw_value.trim_start_matches(self.filler))
-                }
-            }
+    pub fn to_value(&self) -> String {
+        // we don't take into consideration the empty string (or generally an out of bound string)
+        // because we are already checking for string correctness in the main `from_positional_row`
+        // function
+        let raw_value = self
+            .row
+            .chars()
+            .skip(self.offset)
+            .take(self.size)
+            .collect::<String>();
+        if self.left_aligned {
+            raw_value.trim_end_matches(self.filler).to_string()
+        } else {
+            raw_value.trim_start_matches(self.filler).to_string()
         }
     }
 }
