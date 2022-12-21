@@ -13,11 +13,6 @@ pub enum PositionalError {
     UnmatchedVariant(String),
 
     #[error(
-        "Field definition error. Looking for a substring from offset {0} to {1} in the row `{2}`"
-    )]
-    FieldDefinitionError(usize, usize, String),
-
-    #[error(
         "The row passed is too small to work with the fields definition. The row needs to have at least {0} unicode chars. Passed row is: `{1}`"
     )]
     RowSizeError(usize, String),
