@@ -27,8 +27,7 @@ impl<'s> PositionalParsedField<'s> {
     pub fn to_value(&self) -> PositionalResult<&'s str> {
         let slice_start = self.offset;
         let slice_end = self.offset + self.size;
-        let maybe_raw_value = &self.row.get(slice_start..slice_end);
-        match maybe_raw_value {
+        match self.row.get(slice_start..slice_end) {
             None => Err(PositionalError::FieldDefinitionError(
                 slice_start,
                 slice_end,
