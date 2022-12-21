@@ -18,7 +18,7 @@ fn can_extract_enums() {
     let model = analyze(parse_quote!(
         #[derive(FromPositionalRow)]
         enum EnumData {
-            #[matcher(&row_string[0..=3] == "0000")]
+            #[matcher(row_string.get(0..4) == Some("0000"))]
             Row1(RowData1),
         }
     ));

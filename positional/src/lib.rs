@@ -87,9 +87,9 @@
 //!
 //! #[derive(FromPositionalRow, ToPositionalRow)]
 //! enum Rows {
-//!     #[matcher(&row[0..2] == "10")]
+//!     #[matcher(row.get(0..2) == Some("10"))]
 //!     Row1(Row1Data),
-//!     #[matcher(&row[0..2] == "20")]
+//!     #[matcher(row.get(0..2) == Some("20"))]
 //!     Row2(Row2Data),
 //! }
 //!
