@@ -35,3 +35,15 @@ fn ser_de() {
         FromPositionalRow::from_positional_row(&row).expect("error converting from positional row");
     assert_eq!(original_data, data);
 }
+
+#[test]
+fn empty_string() {
+    let row = <Data as FromPositionalRow>::from_positional_row("");
+    assert_eq!(
+        row.err().map(|e| e.to_string()),
+        Some(
+            "Field definition error. Looking for a substring from offset 0 to 5 in the row ``"
+                .to_string()
+        )
+    );
+}
