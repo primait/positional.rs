@@ -1,3 +1,5 @@
+// Force name clashes to make sure the macros generate code with fully qualified imports.
+
 pub trait ToPositionalField {}
 pub trait ToPositionalRow {}
 pub trait FromPositionalRow {}
@@ -12,6 +14,18 @@ struct Data {
     age: i32,
     #[field(size = 20)]
     address: String,
+}
+
+impl Data {
+    #[allow(dead_code)]
+    fn from_positional_row(_: &str) -> Self {
+        unreachable!()
+    }
+
+    #[allow(dead_code)]
+    fn to_positional_row(self) -> String {
+        unreachable!()
+    }
 }
 
 impl Data {
