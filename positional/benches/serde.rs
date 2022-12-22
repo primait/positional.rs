@@ -71,7 +71,7 @@ fn deserialize_struct(c: &mut Criterion) {
 criterion_group! {
     name = benches;
     // This can be any expression that returns a `Criterion` object.
-    config = Criterion::default().sample_size(60);
+    config = Criterion::default().sample_size(10);
     targets = serialize_struct, deserialize_struct
 }
 criterion_main!(benches);
