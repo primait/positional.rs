@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### [Next]
 
+- support for unicode chars while parsing files.
+- fixed a bug where the library would panic (instead of returning an Err) while trying to parse a malformed row.
+
 ### [0.2.3]
 
 - fix build pipeline
