@@ -1,4 +1,4 @@
-use positional::*;
+use positional::ToPositionalRow;
 
 #[derive(ToPositionalRow)]
 struct Data {

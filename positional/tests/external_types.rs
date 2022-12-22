@@ -1,5 +1,5 @@
 use chrono::NaiveDate;
-use positional::*;
+use positional::{ToPositionalField, ToPositionalRow, Writer};
 
 struct Date(NaiveDate);
 

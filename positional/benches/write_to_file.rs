@@ -1,7 +1,7 @@
 use chrono::{DateTime, Utc};
 use criterion::{criterion_group, criterion_main, Criterion};
 use fake::{Dummy, Fake, Faker};
-use positional::*;
+use positional::{FromPositionalRow, ToPositionalRow};
 use std::fs::File;
 use std::io::{LineWriter, Write};
 

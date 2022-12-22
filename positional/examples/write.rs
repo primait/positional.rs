@@ -1,6 +1,6 @@
 use chrono::{DateTime, Utc};
 use fake::{Dummy, Fake, Faker};
-use positional::*;
+use positional::{FromPositionalRow, ToPositionalRow, Writer};
 
 #[derive(ToPositionalRow, FromPositionalRow, Dummy, Debug)]
 struct Data {

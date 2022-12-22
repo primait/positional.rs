@@ -1,7 +1,7 @@
 use chrono::{DateTime, Utc};
 use criterion::{criterion_group, criterion_main, Criterion};
 use fake::{Dummy, Fake, Faker};
-use positional::*;
+use positional::{FromPositionalRow, Reader, ToPositionalField, ToPositionalRow, Writer};
 use std::str::FromStr;
 
 #[derive(ToPositionalRow, FromPositionalRow, Dummy, Debug)]
