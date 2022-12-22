@@ -13,7 +13,7 @@ pub enum PositionalError {
     UnmatchedVariant(String),
 
     #[error(
-        "The row passed is too small to work with the fields definition. The row needs to have at least {0} unicode chars. Passed row is: `{1}`"
+        "The row passed is too small to work with the fields definition. The row needs to have at least {0} unicode chars. Passed row is: `{1}` with length {}", .1.len()
     )]
     RowSizeError(usize, String),
 }

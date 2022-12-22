@@ -42,7 +42,7 @@ fn empty_string() {
     assert_eq!(
         row.err().map(|e| e.to_string()),
         Some(
-            "The row passed is too small to work with the fields definition. The row needs to have at least 30 unicode chars. Passed row is: ``"
+            "The row passed is too small to work with the fields definition. The row needs to have at least 30 unicode chars. Passed row is: `` with length 0"
                 .to_string()
         )
     );
@@ -51,11 +51,18 @@ fn empty_string() {
 #[test]
 fn string_smaller_than_field_definition() {
     let row_content = "1    ---10";
-    let row = <Data as FromPositionalRow>::from_positional_row(row_content);
+    let row = Data::from_positional_row(row_content);
     assert_eq!(
         row.err().map(|e| e.to_string()),
         Some(
-            format!("The row passed is too small to work with the fields definition. The row needs to have at least 30 unicode chars. Passed row is: `{}`", row_content)
+            format!("The row passed is too small to work with the fields definition. The row needs to have at least 30 unicode chars. Passed row is: `{}` with length {}", row_content, row_content.len())
         )
     );
+}
+
+#[test]
+fn unicode_chars() {
+    let row = Data::from_positional_row("Noël ---10the address is this ")
+        .expect("error converting from positional row");
+    assert_eq!(Data::new("Noël", 10, "the address is this"), row);
 }
