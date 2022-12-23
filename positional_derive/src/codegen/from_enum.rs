@@ -41,7 +41,7 @@ fn create_variants_for_from_positional_row(variants: &[Variant]) -> Vec<proc_mac
         let sub_variant = variant.sub_variant_type.clone();
         let stream = quote! {
             if #expr {
-                return Ok(Self::#ident(#sub_variant::from_positional_row(row)?));
+                return Ok(Self::#ident(<#sub_variant as ::positional::FromPositionalRow>::from_positional_row(row)?));
             }
         };
         variants_stream.push(stream);
@@ -54,7 +54,7 @@ fn create_variants_for_to_positional_row(variants: &[Variant]) -> Vec<proc_macro
     for variant in variants {
         let ident = variant.ident.ident.clone();
         let stream = quote! {
-            Self::#ident(sub_variant) => sub_variant.to_positional_row()
+            Self::#ident(sub_variant) => ::positional::ToPositionalRow::to_positional_row(sub_variant)
         };
         variants_stream.push(stream);
     }
