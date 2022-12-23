@@ -35,3 +35,33 @@ fn ser_de() {
         FromPositionalRow::from_positional_row(&row).expect("error converting from positional row");
     assert_eq!(original_data, data);
 }
+
+#[test]
+fn empty_string() {
+    let row = <Data as FromPositionalRow>::from_positional_row("");
+    assert_eq!(
+        row.err().map(|e| e.to_string()),
+        Some("Given row `` has length 0; expected length: 30".to_string())
+    );
+}
+
+#[test]
+fn string_smaller_than_field_definition() {
+    let row_content = "1    ---10";
+    let row = Data::from_positional_row(row_content);
+    assert_eq!(
+        row.err().map(|e| e.to_string()),
+        Some(format!(
+            "Given row `{0}` has length {1}; expected length: 30",
+            row_content,
+            row_content.len()
+        ))
+    );
+}
+
+#[test]
+fn unicode_chars() {
+    let row = Data::from_positional_row("Noël ---10the address is this ")
+        .expect("error converting from positional row");
+    assert_eq!(Data::new("Noël", 10, "the address is this"), row);
+}

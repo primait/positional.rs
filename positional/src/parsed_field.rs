@@ -22,14 +22,20 @@ impl<'s> PositionalParsedField<'s> {
 
     /// output a string representation of the parsed value
     /// trimming is done by the library based on the declared positional row configurations
-    pub fn to_value(&self) -> &'s str {
-        let slice_start = self.offset;
-        let slice_end = self.offset + self.size;
-        let raw_value = &self.row[slice_start..slice_end];
+    pub fn to_value(&self) -> String {
+        // we don't take into consideration the empty string (or generally an out of bound string)
+        // because we are already checking for string correctness in the main `from_positional_row`
+        // function
+        let raw_value = self
+            .row
+            .chars()
+            .skip(self.offset)
+            .take(self.size)
+            .collect::<String>();
         if self.left_aligned {
-            raw_value.trim_end_matches(self.filler)
+            raw_value.trim_end_matches(self.filler).to_string()
         } else {
-            raw_value.trim_start_matches(self.filler)
+            raw_value.trim_start_matches(self.filler).to_string()
         }
     }
 }

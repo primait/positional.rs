@@ -66,9 +66,9 @@ enum AllData {
 }
 
 fn deserialize_enum(c: &mut Criterion) {
-    c.bench_function("deserialize 100.000 structs", |b| {
+    c.bench_function("deserialize 1.000 enums", |b| {
         b.iter(|| {
-            for _ in 1..=100_000 {
+            for _ in 1..=1_000 {
                 let data = if rand::random::<bool>() {
                     AllData::First(Data::random())
                 } else {
@@ -76,7 +76,7 @@ fn deserialize_enum(c: &mut Criterion) {
                 };
                 let writer = Writer::new(vec![data]);
                 let row = writer.to_string();
-                let _data = AllData::parse(&row).unwrap();
+                let _data = AllData::from_positional_row(&row).unwrap();
             }
         })
     });
@@ -85,7 +85,7 @@ fn deserialize_enum(c: &mut Criterion) {
 criterion_group! {
     name = benches;
     // This can be any expression that returns a `Criterion` object.
-    config = Criterion::default().sample_size(60);
+    config = Criterion::default().sample_size(30);
     targets = deserialize_enum
 }
 criterion_main!(benches);

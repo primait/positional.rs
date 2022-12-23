@@ -27,6 +27,9 @@ pub fn codegen_struct(ir: StructIr, impl_block_type: ImplBlockType) -> Rust {
             quote! {
                 impl FromPositionalRow for #container_identity {
                     fn from_positional_row(row: &str) -> Result<Self, Box<dyn std::error::Error>> where Self: Sized {
+                        if row.len() < #offset {
+                            return Err(Box::new(PositionalError::RowSizeError(#offset, row.to_string())));
+                        }
                         Ok(Self {
                             #(#fields_stream),*
                         })
