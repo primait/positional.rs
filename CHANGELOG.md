@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### [Next]
 
+### [0.3.0]
+
 - limited support for unicode chars while parsing files. We are now leveraging a `Chars` iterator instead of an index slice. https://doc.rust-lang.org/std/primitive.str.html#method.chars
 - fixed a bug where the library would panic (instead of returning an Err) while trying to parse a malformed row.
 
@@ -26,7 +28,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - FromPositionalRow and ToPositionalRow macros are now applicable also to enums
 
-[Next]: https://github.com/primait/positional.rs/compare/0.2.3...HEAD
+[Next]: https://github.com/primait/positional.rs/compare/0.3.0...HEAD
+[0.3.0]: https://github.com/primait/positional.rs/compare/0.2.3...0.3.0
 [0.2.3]: https://github.com/primait/positional.rs/compare/0.2.2...0.2.3
 [0.2.2]: https://github.com/primait/positional.rs/compare/0.2.0...0.2.2
 [0.2.0]: https://github.com/primait/positional.rs/compare/0.1.3...0.2.0
