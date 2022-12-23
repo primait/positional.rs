@@ -48,22 +48,21 @@ impl FromStr for CustomType {
 }
 
 fn serialize_struct(c: &mut Criterion) {
-    let iter = std::iter::repeat_with(|| Faker.fake::<Data>()).take(100_000);
+    let iter = std::iter::repeat_with(|| Faker.fake::<Data>()).take(1_000);
     let positional_file = Writer::new(iter);
-    c.bench_function("serialize 100.000 structs", |b| {
+    c.bench_function("serialize 1.000 structs", |b| {
         b.iter(|| positional_file.to_string())
     });
 }
 
 fn deserialize_struct(c: &mut Criterion) {
-    let rows = vec![Faker.fake::<Data>()];
+    let rows_iter = std::iter::repeat_with(|| Faker.fake::<Data>());
+    let rows: Vec<Data> = rows_iter.take(1000).collect();
     let positional_file = Writer::new(rows);
     let line = positional_file.to_string();
-    c.bench_function("deserialize 100.000 structs", |b| {
+    c.bench_function("deserialize a file with 1.000 rows", |b| {
         b.iter(|| {
-            for _ in 1..=100_000 {
-                let _reader: Reader<Data> = Reader::from_str(&line).unwrap();
-            }
+            let _reader: Reader<Data> = Reader::from_str(&line).unwrap();
         })
     });
 }

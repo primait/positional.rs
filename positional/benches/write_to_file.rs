@@ -15,13 +15,13 @@ struct Data {
 }
 
 fn serialize_to_file(c: &mut Criterion) {
-    c.bench_function("serialize 100.000 structs to file", |b| {
+    c.bench_function("serialize 1.000 structs to file", |b| {
         let dir = std::env::temp_dir();
         let file = File::create(format!("{}/positional.txt", dir.to_str().unwrap()))
             .expect("unable to open a file");
         let mut file = LineWriter::new(file);
         b.iter(move || {
-            let iter = std::iter::repeat_with(|| Faker.fake::<Data>()).take(100_000);
+            let iter = std::iter::repeat_with(|| Faker.fake::<Data>()).take(1_000);
             for row in iter {
                 file.write_all(format!("{}\n", row.to_positional_row()).as_bytes())
                     .unwrap();
@@ -33,7 +33,7 @@ fn serialize_to_file(c: &mut Criterion) {
 criterion_group! {
     name = benches;
     // This can be any expression that returns a `Criterion` object.
-    config = Criterion::default().sample_size(60);
+    config = Criterion::default().sample_size(30);
     targets = serialize_to_file
 }
 criterion_main!(benches);

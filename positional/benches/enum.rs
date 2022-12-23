@@ -66,9 +66,9 @@ enum AllData {
 }
 
 fn deserialize_enum(c: &mut Criterion) {
-    c.bench_function("deserialize 100.000 enums", |b| {
+    c.bench_function("deserialize 1.000 enums", |b| {
         b.iter(|| {
-            for _ in 1..=100_000 {
+            for _ in 1..=1_000 {
                 let data = if rand::random::<bool>() {
                     AllData::First(Data::random())
                 } else {
