@@ -1,4 +1,4 @@
-use positional::*;
+use positional::{FromPositionalRow, PositionalError, ToPositionalRow};
 
 #[derive(ToPositionalRow, FromPositionalRow, PartialEq, Debug)]
 struct Data {
@@ -39,10 +39,7 @@ fn ser_de() {
 #[test]
 fn empty_string() {
     let row = <Data as FromPositionalRow>::from_positional_row("");
-    assert_eq!(
-        row.err().map(|e| e.to_string()),
-        Some("Given row `` has length 0; expected length: 30".to_string())
-    );
+    assert_eq!(row, Err(PositionalError::RowSizeError(30, "".to_string())));
 }
 
 #[test]
@@ -50,12 +47,8 @@ fn string_smaller_than_field_definition() {
     let row_content = "1    ---10";
     let row = Data::from_positional_row(row_content);
     assert_eq!(
-        row.err().map(|e| e.to_string()),
-        Some(format!(
-            "Given row `{0}` has length {1}; expected length: 30",
-            row_content,
-            row_content.len()
-        ))
+        row,
+        Err(PositionalError::RowSizeError(30, row_content.to_string()))
     );
 }
 

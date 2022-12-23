@@ -25,10 +25,10 @@ pub fn codegen_struct(ir: StructIr, impl_block_type: ImplBlockType) -> Rust {
     match impl_block_type {
         ImplBlockType::From => {
             quote! {
-                impl FromPositionalRow for #container_identity {
-                    fn from_positional_row(row: &str) -> Result<Self, Box<dyn std::error::Error>> where Self: Sized {
+                impl ::positional::FromPositionalRow for #container_identity {
+                    fn from_positional_row(row: &str) -> ::positional::PositionalResult<Self> {
                         if row.len() < #offset {
-                            return Err(Box::new(PositionalError::RowSizeError(#offset, row.to_string())));
+                            return Err(::positional::PositionalError::RowSizeError(#offset, row.to_string()));
                         }
                         Ok(Self {
                             #(#fields_stream),*
@@ -39,7 +39,7 @@ pub fn codegen_struct(ir: StructIr, impl_block_type: ImplBlockType) -> Rust {
         }
         ImplBlockType::To => {
             quote! {
-                impl ToPositionalRow for #container_identity {
+                impl ::positional::ToPositionalRow for #container_identity {
                     fn to_positional_row(&self) -> String {
                         vec![#(#fields_stream),*].into_iter().map(|field| field.to_string()).collect::<Vec<String>>().join("")
                     }
@@ -56,11 +56,11 @@ fn generate_to_field(field: &Field) -> TokenStream {
     let align = &field.attributes.align;
     if field.optional {
         quote! {
-            positional::PositionalField::new(self.#field_ident.as_ref(), #size, #filler, #align)
+            ::positional::PositionalField::new(self.#field_ident.as_ref(), #size, #filler, #align)
         }
     } else {
         quote! {
-            positional::PositionalField::new(Some(&self.#field_ident), #size, #filler, #align)
+            ::positional::PositionalField::new(Some(&self.#field_ident), #size, #filler, #align)
         }
     }
 }
@@ -72,11 +72,20 @@ fn generate_from_field(field: &Field, offset: usize) -> TokenStream {
     let align = &field.attributes.align;
     if field.optional {
         quote! {
-            #field_ident: positional::PositionalParsedField::new(row, #offset, #size, #filler, #align).to_value().parse().ok()
+            #field_ident: ::positional::PositionalParsedField::new(row, #offset, #size, #filler, #align).to_value().parse().ok()
         }
     } else {
+        let field_name_string = field_ident.to_string();
         quote! {
-            #field_ident: positional::PositionalParsedField::new(row, #offset, #size, #filler, #align).to_value().parse()?
+            #field_ident: ::positional::PositionalParsedField::new(row, #offset, #size, #filler, #align).to_value().parse()
+                .map_err(|_e| ::positional::PositionalError::ParsingFailed{
+                    // Optimally, we'd pass some information from `_e` into the error;
+                    // however, since fields only require a FromStr impl for parsing the data,
+                    // the Error type is unrestricted, meaning we can't even extract an error message out of it.
+                    // Hence, without further restricting the data model, this is the best we can do to report the error to the user.
+                    field: #field_name_string.to_string(),
+                    row: row.to_string(),
+                })?
         }
     }
 }

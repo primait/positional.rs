@@ -12,7 +12,7 @@
 //! If you have the data in memory and want to serialize the struct in a positional file
 //! you need to annotate the struct with the `ToPositionalRow` derive.
 //! ```
-//! use positional::*;
+//! use positional::ToPositionalRow;
 //!
 //! #[derive(ToPositionalRow)]
 //! struct RowData {
@@ -33,7 +33,7 @@
 //!
 //! If you are parsing a file you can use the `FromPositionalRow` derive
 //! ```
-//! use positional::*;
+//! use positional::FromPositionalRow;
 //!
 //! #[derive(FromPositionalRow, PartialEq, Debug)]
 //! struct RowData {
@@ -83,7 +83,7 @@
 //! You can use an enum to represent all rows inside a file.
 //!
 //! ```
-//! use positional::*;
+//! use positional::{FromPositionalRow, ToPositionalRow};
 //!
 //! #[derive(FromPositionalRow, ToPositionalRow)]
 //! enum Rows {

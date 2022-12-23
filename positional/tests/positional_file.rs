@@ -1,4 +1,4 @@
-use positional::*;
+use positional::{ToPositionalRow, Writer};
 use std::fmt::{Display, Formatter};
 use std::num::ParseIntError;
 use std::str::FromStr;

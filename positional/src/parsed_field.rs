@@ -26,12 +26,14 @@ impl<'s> PositionalParsedField<'s> {
         // we don't take into consideration the empty string (or generally an out of bound string)
         // because we are already checking for string correctness in the main `from_positional_row`
         // function
+
         let raw_value = self
             .row
             .chars()
             .skip(self.offset)
             .take(self.size)
             .collect::<String>();
+
         if self.left_aligned {
             raw_value.trim_end_matches(self.filler).to_string()
         } else {

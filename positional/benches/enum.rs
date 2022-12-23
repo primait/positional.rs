@@ -1,7 +1,7 @@
 use chrono::{DateTime, Utc};
 use criterion::{criterion_group, criterion_main, Criterion};
 use fake::{Fake, Faker};
-use positional::*;
+use positional::{FromPositionalRow, ToPositionalRow};
 
 #[derive(FromPositionalRow, ToPositionalRow, Debug)]
 struct Data {

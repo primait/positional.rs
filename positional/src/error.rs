@@ -16,4 +16,7 @@ pub enum PositionalError {
         "Given row `{1}` has length {}; expected length: {0}", .1.len()
     )]
     RowSizeError(usize, String),
+
+    #[error("Parsing field `{field}` in row `{row}` failed.")]
+    ParsingFailed { field: String, row: String },
 }
