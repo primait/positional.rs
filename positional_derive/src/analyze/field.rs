@@ -27,7 +27,7 @@ fn parse_field_attributes(field: &syn::Field) -> Option<(LitInt, Option<LitChar>
         .attrs
         .iter()
         .find(|attribute| attribute.path.is_ident(FIELD_ATTRIBUTE))
-        .map(|attribute| parse_field_attribute_meta(attribute))
+        .map(parse_field_attribute_meta)
 }
 
 fn parse_field_attribute_meta(
