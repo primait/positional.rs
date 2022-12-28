@@ -1,4 +1,4 @@
-name: Continuous Integration
+run-name: Checking rust code formatting
 
 on:
   push:
@@ -20,13 +20,3 @@ jobs:
         run: cargo fmt --all -- --check
       - name: Clippy
         run: cargo clippy -- -D warnings
-
-  test:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v3
-    - uses: Swatinem/rust-cache@v2
-    - name: Build
-      run: cargo build --verbose
-    - name: Run tests
-      run: cargo test --verbose
