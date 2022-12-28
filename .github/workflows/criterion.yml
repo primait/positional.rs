@@ -14,6 +14,8 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: Swatinem/rust-cache@v2
+      - name: install criterion
+        run: cargo install criterion
       - name: cargo criterion
         run: cargo criterion
       - name: Save criterion results
