@@ -16,8 +16,8 @@ jobs:
       - uses: taiki-e/install-action@cargo-make
       - name: Get version
         run: |
-          POSITIONAL_VERSION=$(grep -m1 '^version' Cargo.toml | cut -d'"' -f2)
-          POSITIONAL_DERIVE_VERSION=$(grep -m1 '^version' Cargo.toml | cut -d'"' -f2)
+          POSITIONAL_VERSION=$(grep -m1 '^version' positional/Cargo.toml | cut -d'"' -f2)
+          POSITIONAL_DERIVE_VERSION=$(grep -m1 '^version' positional_derive/Cargo.toml | cut -d'"' -f2)
           echo "POSITIONAL_VERSION=$POSITIONAL_VERSION" >> $GITHUB_ENV
           echo "POSITIONAL_DERIVE_VERSION=$POSITIONAL_DERIVE_VERSION" >> $GITHUB_ENV
       - name: Check version
