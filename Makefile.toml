@@ -18,7 +18,7 @@ args = [
 [tasks.fmt-check]
 description = "Runs the cargo rustfmt plugin to check everything is well formatted"
 command = "cargo"
-args = ["fmt", "--workspace", "--", "--check"]
+args = ["fmt", "--", "--check"]
 
 [tasks.test]
 command = "cargo"
