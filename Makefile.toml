@@ -27,15 +27,15 @@ args = ["test", "${@}", "--all-features"]
 [tasks.clippy]
 description = "Run clippy"
 command = "cargo"
-args = ["clippy", "--all-targets", "--all-features", "--", "-D", "warnings"]
+args = ["clippy", "--all-targets", "--all-features", "--workspace", "--", "-D", "warnings"]
 
 [tasks.docs]
 description = "Build docs as they are rendered on docs.rs"
 command = "cargo"
-args = ["doc", "--document-private-items", "--all-features", "--no-deps"]
+args = ["doc", "--document-private-items", "--all-features", "--workspace", "--no-deps"]
 env = { "RUSTDOCFLAGS" = "-Dwarnings" }
 
 [tasks.release]
 description = "Task to release the package to crates.io"
 command = "cargo"
-args = ["release", "publish", "--no-confirm", "--allow-branch \"*\"", "--all-features", "--execute"]
+args = ["release", "publish", "--no-confirm", "--allow-branch \"*\"", "--all-features", "--workspace", "--execute"]
