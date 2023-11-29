@@ -18,11 +18,11 @@ args = [
 [tasks.fmt-check]
 description = "Runs the cargo rustfmt plugin to check everything is well formatted"
 command = "cargo"
-args = ["fmt", "--all", "--", "--check"]
+args = ["fmt", "--workspace", "--", "--check"]
 
 [tasks.test]
 command = "cargo"
-args = ["test", "${@}", "--all-features"]
+args = ["test", "${@}", "--all-features", "--workspace"]
 
 [tasks.clippy]
 description = "Run clippy"
