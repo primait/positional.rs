@@ -13,14 +13,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: Swatinem/rust-cache@v2
-      - name: cargo fmt check
-        run: cargo fmt --all -- --check
-      - name: Clippy
-        run: cargo clippy --workspace --all-features -- -D warnings
-      - name: Build docs
-        run: cargo doc --document-private-items --workspace --all-features --no-deps
-    env:
-      RUSTDOCFLAGS: -Dwarnings
+      - uses: taiki-e/install-action@cargo-make
+      - run: cargo make fmt-check
+      - run: cargo make clippy
+      - run: cargo make docs
+
   test:
     # Avoid duplicate jobs on PR from a branch on the same repo
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
@@ -28,8 +25,8 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: Swatinem/rust-cache@v2
-      - name: Run tests
-        run: cargo test --all-features
+      - uses: taiki-e/install-action@cargo-make
+      - run: cargo make test
 
   alls-green:
     if: always() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name)
