@@ -13,9 +13,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: Swatinem/rust-cache@v2
-      - uses: taiki-e/install-action@v2
-        with:
-          tool: cargo-release@0.24
       - uses: taiki-e/install-action@cargo-make
       - run: cargo make fmt-check
       - run: cargo make clippy
