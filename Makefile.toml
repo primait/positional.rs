@@ -38,4 +38,4 @@ env = { "RUSTDOCFLAGS" = "-Dwarnings" }
 [tasks.release]
 description = "Task to release the package to crates.io"
 command = "cargo"
-args = ["publish", "--no-verify"]
+args = ["release", "publish", "--no-confirm", "--allow-branch \"*\"", "--all-features", "--workspace", "--execute"]
