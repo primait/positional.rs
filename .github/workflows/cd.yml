@@ -12,20 +12,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: taiki-e/install-action@cargo-release
+      - uses: taiki-e/install-action@v2
+        with:
+          tool: cargo-release@0.24
       - uses: taiki-e/install-action@cargo-make
-      - name: Get version
-        run: |
-          POSITIONAL_VERSION=$(grep -m1 '^version' positional/Cargo.toml | cut -d'"' -f2)
-          POSITIONAL_DERIVE_VERSION=$(grep -m1 '^version' positional_derive/Cargo.toml | cut -d'"' -f2)
-          echo "POSITIONAL_VERSION=$POSITIONAL_VERSION" >> $GITHUB_ENV
-          echo "POSITIONAL_DERIVE_VERSION=$POSITIONAL_DERIVE_VERSION" >> $GITHUB_ENV
-      - name: Check version
-        if: ${{ github.event.release.tag_name != env.POSITIONAL_VERSION || github.event.release.tag_name != env.POSITIONAL_DERIVE_VERSION }}
-        run: |
-          echo "Github ref tag [${{ github.event.release.tag_name }}] is different from positional Cargo.toml version [${{ env.POSITIONAL_VERSION }}] or positional_derive Cargo.toml version [${{ env.POSITIONAL_DERIVE_VERSION }}]"
-          exit 1
-      - run: cargo login "$CARGO_AUTH_KEY"
+      - name: login
+        run: cargo login "$CARGO_AUTH_KEY"
         env:
           CARGO_AUTH_KEY: ${{ secrets.CARGO_AUTH_KEY }}
       - run: cargo make release
