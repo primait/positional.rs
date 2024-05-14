@@ -2,7 +2,7 @@ error: failed to parse field attribute
 
          = note: expected character literal
 
- --> tests/ui/wrong-filler-type.rs:5:5
+ --> tests/ui/wrong-filler-type.rs:5:33
   |
 5 |     #[field(size = 10, filler = "a")]
-  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |                                 ^^^

@@ -50,7 +50,7 @@ fn parse_field_attribute_meta(
     });
 
     if let Err(err) = parse_result {
-        abort!(attribute, "failed to parse field attribute"; note = err.to_string());
+        abort!(err.span(), "failed to parse field attribute"; note = err.to_string());
     }
 
     match size {

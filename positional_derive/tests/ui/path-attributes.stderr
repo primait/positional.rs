@@ -2,7 +2,7 @@ error: failed to parse field attribute
 
          = note: expected attribute arguments in parentheses: #[field(...)]
 
- --> tests/ui/path-attributes.rs:5:5
+ --> tests/ui/path-attributes.rs:5:7
   |
 5 |     #[field]
-  |     ^^^^^^^^
+  |       ^^^^^

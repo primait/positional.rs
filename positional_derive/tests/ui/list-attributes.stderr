@@ -2,7 +2,7 @@ error: failed to parse field attribute
 
          = note: unsupported attribute
 
- --> tests/ui/list-attributes.rs:5:5
+ --> tests/ui/list-attributes.rs:5:13
   |
 5 |     #[field(a)]
-  |     ^^^^^^^^^^^
+  |             ^
