@@ -1,4 +1,3 @@
-
 use proc_macro_error::abort;
 use syn::{LitChar, LitInt, LitStr};
 
