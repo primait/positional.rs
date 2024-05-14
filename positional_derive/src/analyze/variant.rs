@@ -1,5 +1,4 @@
 use proc_macro_error::abort;
-use syn::spanned::Spanned;
 use syn::{Expr, Fields};
 
 const MATCHER_ATTRIBUTE: &str = "matcher";
