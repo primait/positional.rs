@@ -1,4 +1,5 @@
 use proc_macro_error::abort;
+use quote::ToTokens;
 use syn::parse::{Parse, ParseStream};
 use syn::spanned::Spanned;
 use syn::{parenthesized, Expr, Fields};
@@ -70,13 +71,13 @@ fn parse_variant_attributes(variant: &syn::Variant) -> Option<Matcher> {
     variant
         .attrs
         .iter()
-        .find(|attribute| attribute.path.is_ident(MATCHER_ATTRIBUTE))
+        .find(|attribute| attribute.path().is_ident(MATCHER_ATTRIBUTE))
         .map(parse_matcher_expression)
 }
 
 fn parse_matcher_expression(attribute: &syn::Attribute) -> Matcher {
-    let span = attribute.tokens.span();
-    if let Ok(matcher) = syn::parse2::<Matcher>(attribute.tokens.clone()) {
+    let span = attribute.span();
+    if let Ok(matcher) = syn::parse2::<Matcher>(attribute.to_token_stream()) {
         matcher
     } else {
         abort!(
