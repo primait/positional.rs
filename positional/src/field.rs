@@ -1,5 +1,5 @@
-use std::fmt::Display;
 use pad::{Alignment, PadStr};
+use std::fmt::Display;
 
 #[doc(hidden)]
 
@@ -49,7 +49,11 @@ impl PositionalField {
 
 impl Display for PositionalField {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self.value.pad(self.size, self.filler, self.alignment, true))
+        write!(
+            f,
+            "{}",
+            self.value.pad(self.size, self.filler, self.alignment, true)
+        )
     }
 }
 
