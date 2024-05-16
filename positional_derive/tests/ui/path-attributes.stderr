@@ -1,6 +1,6 @@
-error: wrong field configuration
+error: failed to parse field attribute
 
-         = help: there should only be name = value couple inside the field configuration
+         = note: expected attribute arguments in parentheses: #[field(...)]
 
  --> tests/ui/path-attributes.rs:5:7
   |

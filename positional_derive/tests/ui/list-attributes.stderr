@@ -1,6 +1,6 @@
-error: wrong field configuration
+error: failed to parse field attribute
 
-         = help: there should only be name = value couple inside the field configuration
+         = note: unsupported attribute
 
  --> tests/ui/list-attributes.rs:5:13
   |

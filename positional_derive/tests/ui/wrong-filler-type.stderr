@@ -1,8 +1,8 @@
-error: wrong field configuration
+error: failed to parse field attribute
 
-         = help: the filler configuration should be a char
+         = note: expected character literal
 
- --> tests/ui/wrong-filler-type.rs:5:5
+ --> tests/ui/wrong-filler-type.rs:5:33
   |
 5 |     #[field(size = 10, filler = "a")]
-  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |                                 ^^^

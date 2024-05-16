@@ -1,6 +1,5 @@
 use proc_macro_error::abort;
-use std::collections::HashMap;
-use syn::{Lit, LitChar, LitInt, LitStr, Meta, NestedMeta};
+use syn::{LitChar, LitInt, LitStr};
 
 const FIELD_ATTRIBUTE: &str = "field";
 
@@ -26,106 +25,40 @@ fn parse_field_attributes(field: &syn::Field) -> Option<(LitInt, Option<LitChar>
     field
         .attrs
         .iter()
-        .find(|attribute| attribute.path.is_ident(FIELD_ATTRIBUTE))
+        .find(|attribute| attribute.path().is_ident(FIELD_ATTRIBUTE))
         .map(parse_field_attribute_meta)
 }
 
 fn parse_field_attribute_meta(
     attribute: &syn::Attribute,
 ) -> (LitInt, Option<LitChar>, Option<LitStr>) {
-    match attribute.parse_meta() {
-        Ok(meta) => {
-            let mut attrs = HashMap::new();
-            parse_meta(&meta, &mut attrs);
+    let mut size: Option<LitInt> = None;
+    let mut align: Option<LitStr> = None;
+    let mut filler: Option<LitChar> = None;
 
-            let size = match attrs.get("size") {
-                None => {
-                    abort!(
-                        attribute,
-                        "wrong field configuration";
-                        help = "you need to provide at least a size configuration to the field"
-                    )
-                }
-                Some(size_lit) => match size_lit {
-                    Lit::Int(lit_int) => lit_int,
-                    _ => {
-                        abort!(
-                            attribute,
-                            "wrong field configuration";
-                            help = "the size configuration should be a number"
-                        )
-                    }
-                },
-            };
-
-            let filler = match attrs.get("filler") {
-                None => None,
-                Some(filler_lit) => match filler_lit {
-                    Lit::Char(lit_char) => Some(lit_char),
-                    _ => {
-                        abort!(
-                            attribute,
-                            "wrong field configuration";
-                            help = "the filler configuration should be a char"
-                        )
-                    }
-                },
-            };
-
-            let align = match attrs.get("align") {
-                None => None,
-                Some(filler_align) => match filler_align {
-                    Lit::Str(lit_str) => Some(lit_str),
-                    _ => {
-                        abort!(
-                            attribute,
-                            "wrong field configuration";
-                            help = "the align configuration should be a string"
-                        )
-                    }
-                },
-            };
-
-            (size.clone(), filler.cloned(), align.cloned())
+    let parse_result = attribute.parse_nested_meta(|meta| {
+        if meta.path.is_ident("size") {
+            size = Some(meta.value()?.parse()?);
+        } else if meta.path.is_ident("align") {
+            align = Some(meta.value()?.parse()?);
+        } else if meta.path.is_ident("filler") {
+            filler = Some(meta.value()?.parse()?);
+        } else {
+            return Err(meta.error("unsupported attribute"));
         }
-        Err(_) => {
-            abort!(
-                attribute,
-                "wrong field configuration";
-                help = "unable to parse field configuration"
-            )
-        }
+        Ok(())
+    });
+
+    if let Err(err) = parse_result {
+        abort!(err.span(), "failed to parse field attribute"; note = err.to_string());
     }
-}
 
-fn parse_meta(meta: &syn::Meta, attrs: &mut HashMap<String, syn::Lit>) {
-    match meta {
-        Meta::Path(path) => {
-            abort!(
-                path,
-                "wrong field configuration";
-                help = "there should only be name = value couple inside the field configuration"
-            )
-        }
-        Meta::List(meta_list) => {
-            for nested_meta in &meta_list.nested {
-                match nested_meta {
-                    NestedMeta::Meta(name_value) => parse_meta(name_value, attrs),
-                    NestedMeta::Lit(lit) => {
-                        abort!(
-                            lit,
-                            "wrong field configuration";
-                            help = "there should only be name = value couple inside the field configuration"
-                        )
-                    }
-                }
-            }
-        }
-        Meta::NameValue(name_value) => {
-            attrs.insert(
-                name_value.path.get_ident().unwrap().to_string(),
-                name_value.lit.clone(),
-            );
-        }
+    match size {
+        Some(size) => (size, filler, align),
+        None => abort!(
+            attribute,
+            "wrong field configuration";
+            help = "you need to provide at least a size configuration to the field"
+        ),
     }
 }

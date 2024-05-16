@@ -1,7 +1,5 @@
 use proc_macro_error::abort;
-use syn::parse::{Parse, ParseStream};
-use syn::spanned::Spanned;
-use syn::{parenthesized, Expr, Fields};
+use syn::{Expr, Fields};
 
 const MATCHER_ATTRIBUTE: &str = "matcher";
 
@@ -14,17 +12,6 @@ pub struct Variant {
 #[derive(Debug, Clone)]
 pub struct Matcher {
     pub expr: Expr,
-}
-
-impl Parse for Matcher {
-    fn parse(input: ParseStream) -> syn::Result<Self> {
-        let content;
-        let _parenthesis = parenthesized!(content in input);
-
-        Ok(Self {
-            expr: content.parse()?,
-        })
-    }
 }
 
 impl Variant {
@@ -70,19 +57,19 @@ fn parse_variant_attributes(variant: &syn::Variant) -> Option<Matcher> {
     variant
         .attrs
         .iter()
-        .find(|attribute| attribute.path.is_ident(MATCHER_ATTRIBUTE))
+        .find(|attribute| attribute.path().is_ident(MATCHER_ATTRIBUTE))
         .map(parse_matcher_expression)
 }
 
 fn parse_matcher_expression(attribute: &syn::Attribute) -> Matcher {
-    let span = attribute.tokens.span();
-    if let Ok(matcher) = syn::parse2::<Matcher>(attribute.tokens.clone()) {
-        matcher
-    } else {
-        abort!(
-            span,
-            "expected an expression as matcher";
-            help = "example syntax: `#[matcher(row[0..2] == \"00\")]`"
-        )
+    match attribute.parse_args::<Expr>() {
+        Ok(expr) => Matcher { expr },
+        Err(err) => {
+            abort!(
+                err.span(),
+                "expected an expression as matcher";
+                help = "example syntax: `#[matcher(row[0..2] == \"00\")]`"
+            )
+        }
     }
 }
