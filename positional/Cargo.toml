@@ -20,7 +20,7 @@ harness = false
 name = "enum"
 
 [dependencies]
-itertools = "0.12.1"
+itertools = "0.13.0"
 pad = "0.1.6"
 positional_derive = {version = "=0.4.1-rc.0", path = "../positional_derive"}
 proc-macro2 = "1.0.39"
