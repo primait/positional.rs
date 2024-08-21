@@ -1,0 +1,5 @@
+files:
+  - path: positional/Cargo.toml
+    pattern: '^version = \"{version}\"'
+  - path: positional_derive/Cargo.toml
+    pattern: '^version = \"{version}\"'

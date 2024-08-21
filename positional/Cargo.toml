@@ -5,7 +5,7 @@ license = "MIT"
 name = "positional"
 readme = "../README.md"
 repository = "https://github.com/primait/positional.rs"
-version = "0.4.1-rc.0"
+version = "0.4.2"
 
 [[bench]]
 harness = false
