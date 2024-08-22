@@ -1,5 +1,3 @@
-use std::fmt::Display;
-
 use pad::{Alignment, PadStr};
 use std::fmt::Display;
 
