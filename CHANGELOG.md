@@ -12,7 +12,9 @@ and this project adheres to
 
 ### Changed
 
-- update itertools to 0.13.0
+- update criterion to 0.5
+- update itertools to 0.13
+- update syn to 2.0
 
 ## [0.4.1]
 
