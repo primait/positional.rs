@@ -10,7 +10,7 @@ documentation = "https://docs.rs/positional"
 proc-macro = true
 
 [dependencies]
-proc-macro-error = "1.0.4"
+proc-macro-error2 = "2.0"
 proc-macro2 = "1.0.39"
 quote = "1.0"
 syn = {version = "2.0.63", features = ["extra-traits", "full"]}

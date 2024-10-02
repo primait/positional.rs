@@ -8,6 +8,8 @@ and this project adheres to
 
 ## [Unreleased]
 
+- replace the proc-macro-error dependency with proc-macro-error2
+
 ## [0.4.2]
 
 ### Changed

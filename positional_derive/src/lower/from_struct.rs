@@ -1,6 +1,6 @@
 use super::extract_option_type;
 use crate::analyze::{FieldAlignment, StructModel};
-use proc_macro_error::abort;
+use proc_macro_error2::abort;
 
 pub struct StructIr {
     pub container_identity: syn::Ident,
