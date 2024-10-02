@@ -22,7 +22,7 @@ name = "enum"
 [dependencies]
 itertools = "0.13.0"
 pad = "0.1.6"
-positional_derive = {version = "=0.4.2", path = "../positional_derive"}
+positional_derive = {version = "=0.4.3", path = "../positional_derive"}
 proc-macro2 = "1.0.39"
 quote = "1.0"
 thiserror = "1.0.31"
