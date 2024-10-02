@@ -1,0 +1,22 @@
+run-name: Checking rust code formatting
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+    steps:
+      - uses: actions/checkout@v3
+      - uses: Swatinem/rust-cache@v2
+      - name: cargo fmt
+        run: cargo fmt --all -- --check
+      - name: Clippy
+        run: cargo clippy -- -D warnings
