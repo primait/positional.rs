@@ -1,4 +1,6 @@
-# positional.rs [![Build Status](https://drone-1.prima.it/api/badges/primait/positional.rs/status.svg)](https://drone-1.prima.it/primait/positional.rs)
+# positional.rs
+
+[![CI](https://github.com/primait/positional.rs/actions/workflows/ci.yml/badge.svg)](https://github.com/primait/positional.rs/actions/workflows/ci.yml)
 
 This is a library for authoring and parsing positional files
 
