@@ -25,7 +25,7 @@ pad = "0.1.6"
 positional_derive = {version = "=0.4.3", path = "../positional_derive"}
 proc-macro2 = "1.0.39"
 quote = "1.0"
-thiserror = "1.0.31"
+thiserror = "2.0.6"
 
 [dev-dependencies]
 chrono = "0.4.19"
