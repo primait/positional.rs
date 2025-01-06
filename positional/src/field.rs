@@ -2,7 +2,6 @@ use pad::{Alignment, PadStr};
 use std::fmt::Display;
 
 #[doc(hidden)]
-
 /// a trait to represent a type that could be converted to a positional field
 ///
 /// There is a generic implementation for types that implements Display
