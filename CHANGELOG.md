@@ -10,6 +10,15 @@ and this project adheres to
 
 ---
 
+## [0.4.4] - 2025-01-06
+
+# Updated
+
+- Updated `thiserror` to 2.0
+- Updated `itertools` to 0.14 
+
+---
+
 ## [0.4.3] - 2024-10-02
 
 - replace the proc-macro-error dependency with proc-macro-error2
@@ -64,6 +73,8 @@ and this project adheres to
 [0.1.3]: https://github.com/primait/positional.rs/compare/0.1.2...0.1.3
 [0.1.2]: https://github.com/primait/positional.rs/compare/0.1.1...0.1.2
 
-[Unreleased]: https://github.com/primait/positional.rs/compare/0.4.3...HEAD
+
+[Unreleased]: https://github.com/primait/positional.rs/compare/0.4.4...HEAD
+[0.4.4]: https://github.com/primait/positional.rs/compare/0.4.3...0.4.4
 [0.4.3]: https://github.com/primait/positional.rs/compare/0.4.2...0.4.3
 [0.4.2]: https://github.com/primait/positional.rs/releases/tag/0.4.2
