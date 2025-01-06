@@ -1,5 +1,7 @@
 files:
   - path: positional/Cargo.toml
     pattern: '^version = \"{version}\"'
+  - path: positional/Cargo.toml
+    pattern: 'positional_derive = {{version = \"={version}\", path = \"../positional_derive\"}}'
   - path: positional_derive/Cargo.toml
     pattern: '^version = \"{version}\"'
