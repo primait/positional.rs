@@ -12,6 +12,10 @@ and this project adheres to
 
 ## [0.4.4] - 2025-01-06
 
+# Changed
+
+- remove ![doc(hidden)] from `ToPositionalField`
+
 # Updated
 
 - Updated `thiserror` to 2.0
