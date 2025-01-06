@@ -13,7 +13,7 @@ pub enum PositionalError {
     UnmatchedVariant(String),
 
     #[error(
-        "Given row `{1}` has length {}; expected length: {0}", .1.len()
+        "Given row `{1}` has length {n}; expected length: {0}", n = .1.len()
     )]
     RowSizeError(usize, String),
 
