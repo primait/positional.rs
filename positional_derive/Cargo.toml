@@ -3,7 +3,7 @@ description = "Macros for positional crate"
 edition = "2021"
 license = "MIT"
 name = "positional_derive"
-version = "0.4.3"
+version = "0.4.4"
 documentation = "https://docs.rs/positional"
 
 [lib]
