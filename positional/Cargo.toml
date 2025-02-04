@@ -31,4 +31,4 @@ thiserror = "2.0.9"
 chrono = "0.4.19"
 criterion = "0.5.1"
 fake = {version = "3.0.0", features = ["derive", "chrono"]}
-rand = "0.8"
+rand = "0.9"
