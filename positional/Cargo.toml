@@ -30,5 +30,5 @@ thiserror = "2.0.9"
 [dev-dependencies]
 chrono = "0.4.19"
 criterion = "0.5.1"
-fake = {version = "3.0.0", features = ["derive", "chrono"]}
+fake = {version = "4.0.0", features = ["derive", "chrono"]}
 rand = "0.9"
