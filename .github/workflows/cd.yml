@@ -12,10 +12,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: taiki-e/install-action@v2
+      - uses: taiki-e/install-action@5651179950649c44da31d346537e20c0534f0f25 # ratchet:taiki-e/install-action@v2
         with:
           tool: cargo-release@0.24
-      - uses: taiki-e/install-action@cargo-make
+      - uses: taiki-e/install-action@ae532dedd825648efd18d9c49c9a443d0398ca0a # ratchet:taiki-e/install-action@cargo-make
       - name: Get version
         run: |
           POSITIONAL_VERSION=$(grep -m1 '^version' positional/Cargo.toml | cut -d'"' -f2)
