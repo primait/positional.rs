@@ -21,7 +21,7 @@ impl<T: ToPositionalRow> Writer<T> {
 impl<T: ToPositionalRow> Display for Writer<T> {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         let output: String = self.rows.iter().map(T::to_positional_row).join("\n");
-        write!(f, "{}", output)
+        write!(f, "{output}")
     }
 }
 

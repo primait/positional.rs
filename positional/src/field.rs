@@ -88,12 +88,12 @@ mod tests {
     #[test]
     fn non_empty_value_size_one_more_than_value_left_align_to_string() {
         let field = PositionalField::new(Some(TEST_STRING), 8, ' ', true);
-        assert_eq!(field.to_string(), format!("{} ", TEST_STRING));
+        assert_eq!(field.to_string(), format!("{TEST_STRING} "));
     }
 
     #[test]
     fn non_empty_value_size_one_more_than_value_right_align_to_string() {
         let field = PositionalField::new(Some(TEST_STRING), 8, ' ', false);
-        assert_eq!(field.to_string(), format!(" {}", TEST_STRING));
+        assert_eq!(field.to_string(), format!(" {TEST_STRING}"));
     }
 }

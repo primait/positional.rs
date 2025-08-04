@@ -20,8 +20,7 @@ impl FromStr for FieldAlignment {
             "right" => Ok(Self::Right),
             "r" => Ok(Self::Right),
             _ => Err(format!(
-                "align value should be 'left', 'right', 'l' or 'r', \"{}\" provided",
-                s
+                "align value should be 'left', 'right', 'l' or 'r', \"{s}\" provided"
             )),
         }
     }
