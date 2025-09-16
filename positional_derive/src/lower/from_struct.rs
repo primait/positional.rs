@@ -17,6 +17,7 @@ pub struct RowAttributes {
     pub size: usize,
     pub filler: char,
     pub align: FieldAlignment,
+    pub trim: bool,
 }
 
 pub fn lower_struct(model: StructModel) -> StructIr {
@@ -54,6 +55,7 @@ pub fn lower_struct(model: StructModel) -> StructIr {
                         }
                     })
                     .unwrap_or(FieldAlignment::Left),
+                trim: model_field.trim,
             },
         })
     }

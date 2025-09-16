@@ -8,20 +8,24 @@ pub struct Field {
     pub size: LitInt,
     pub filler: Option<LitChar>,
     pub align: Option<LitStr>,
+    pub trim: bool,
 }
 
 impl Field {
     pub fn new(field: syn::Field) -> Option<Self> {
-        parse_field_attributes(&field).map(|(size, filler, align)| Self {
+        parse_field_attributes(&field).map(|(size, filler, align, trim)| Self {
             field,
             size,
             filler,
             align,
+            trim,
         })
     }
 }
 
-fn parse_field_attributes(field: &syn::Field) -> Option<(LitInt, Option<LitChar>, Option<LitStr>)> {
+fn parse_field_attributes(
+    field: &syn::Field,
+) -> Option<(LitInt, Option<LitChar>, Option<LitStr>, bool)> {
     field
         .attrs
         .iter()
@@ -31,10 +35,11 @@ fn parse_field_attributes(field: &syn::Field) -> Option<(LitInt, Option<LitChar>
 
 fn parse_field_attribute_meta(
     attribute: &syn::Attribute,
-) -> (LitInt, Option<LitChar>, Option<LitStr>) {
+) -> (LitInt, Option<LitChar>, Option<LitStr>, bool) {
     let mut size: Option<LitInt> = None;
     let mut align: Option<LitStr> = None;
     let mut filler: Option<LitChar> = None;
+    let mut trim: bool = true;
 
     let parse_result = attribute.parse_nested_meta(|meta| {
         if meta.path.is_ident("size") {
@@ -43,6 +48,8 @@ fn parse_field_attribute_meta(
             align = Some(meta.value()?.parse()?);
         } else if meta.path.is_ident("filler") {
             filler = Some(meta.value()?.parse()?);
+        } else if meta.path.is_ident("no_trim") {
+            trim = false;
         } else {
             return Err(meta.error("unsupported attribute"));
         }
@@ -54,7 +61,7 @@ fn parse_field_attribute_meta(
     }
 
     match size {
-        Some(size) => (size, filler, align),
+        Some(size) => (size, filler, align, trim),
         None => abort!(
             attribute,
             "wrong field configuration";
