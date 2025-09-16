@@ -12,7 +12,7 @@ fn filler_is_valid_number() {
 
     let str = row.to_positional_row();
     let parsed = PositionalStruct::from_positional_row(&str);
-    assert!(matches!(parsed, Ok(_)));
+    assert!(parsed.is_ok());
     assert_eq!(row, parsed.unwrap());
 }
 
@@ -28,7 +28,7 @@ fn value_is_optional() {
 
     let str = row.to_positional_row();
     let parsed = PositionalStruct::from_positional_row(&str);
-    assert!(matches!(parsed, Ok(_)));
+    assert!(parsed.is_ok());
     assert_eq!(row, parsed.unwrap());
 }
 
@@ -46,6 +46,6 @@ fn filler_is_valid_string() {
 
     let str = row.to_positional_row();
     let parsed = PositionalStruct::from_positional_row(&str);
-    assert!(matches!(parsed, Ok(_)));
+    assert!(parsed.is_ok());
     assert_eq!(row, parsed.unwrap());
 }
