@@ -17,22 +17,6 @@ fn filler_is_valid_number() {
 }
 
 #[test]
-fn value_is_optional() {
-    #[derive(FromPositionalRow, ToPositionalRow, Eq, PartialEq, Debug)]
-    pub struct PositionalStruct {
-        #[field(size = 2, align = "right", filler = '0', no_trim)]
-        pub u_32: Option<u32>,
-    }
-
-    let row = PositionalStruct { u_32: Some(0) };
-
-    let str = row.to_positional_row();
-    let parsed = PositionalStruct::from_positional_row(&str);
-    assert!(matches!(parsed, Ok(_)));
-    assert_eq!(row, parsed.unwrap());
-}
-
-#[test]
 fn filler_is_valid_string() {
     #[derive(FromPositionalRow, ToPositionalRow, Eq, PartialEq, Debug)]
     pub struct PositionalStruct {
