@@ -67,7 +67,6 @@
 //! | size           | yes       | number | ---          | define the size of the field in the positional row               |
 //! | filler         | no        | char   | `whitespace` | define what represent the empty space in the field               |
 //! | align          | no        | string | `"left"`     | define the alignment of the field. It could be *left* or *right* |
-//! | no_trim        | no        |        |              | flag to avoid consuming the filler when parsing a value          |
 //!
 //! ### Use your own types
 //!
