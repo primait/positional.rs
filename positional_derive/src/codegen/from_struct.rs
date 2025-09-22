@@ -70,15 +70,14 @@ fn generate_from_field(field: &Field, offset: usize) -> TokenStream {
     let size = field.attributes.size;
     let filler = field.attributes.filler;
     let align = &field.attributes.align;
-    let trim = field.attributes.trim;
     if field.optional {
         quote! {
-            #field_ident: ::positional::PositionalParsedField::new(row, #offset, #size, #filler, #align, #trim).to_value().parse().ok()
+            #field_ident: ::positional::PositionalParsedField::new(row, #offset, #size, #filler, #align).to_value().parse().ok()
         }
     } else {
         let field_name_string = field_ident.to_string();
         quote! {
-            #field_ident: ::positional::PositionalParsedField::new(row, #offset, #size, #filler, #align, #trim).to_value().parse()
+            #field_ident: ::positional::PositionalParsedField::new(row, #offset, #size, #filler, #align).to_value().parse()
                 .map_err(|_e| ::positional::PositionalError::ParsingFailed{
                     // Optimally, we'd pass some information from `_e` into the error;
                     // however, since fields only require a FromStr impl for parsing the data,

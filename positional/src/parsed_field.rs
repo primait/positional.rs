@@ -6,25 +6,16 @@ pub struct PositionalParsedField<'s> {
     size: usize,
     filler: char,
     left_aligned: bool,
-    trim: bool,
 }
 
 impl<'s> PositionalParsedField<'s> {
-    pub fn new(
-        row: &'s str,
-        offset: usize,
-        size: usize,
-        filler: char,
-        left_aligned: bool,
-        trim: bool,
-    ) -> Self {
+    pub fn new(row: &'s str, offset: usize, size: usize, filler: char, left_aligned: bool) -> Self {
         Self {
             row,
             offset,
             size,
             filler,
             left_aligned,
-            trim,
         }
     }
 
@@ -41,9 +32,6 @@ impl<'s> PositionalParsedField<'s> {
             .skip(self.offset)
             .take(self.size)
             .collect::<String>();
-        if !self.trim {
-            return raw_value.to_string();
-        }
 
         if self.left_aligned {
             raw_value.trim_end_matches(self.filler).to_string()
