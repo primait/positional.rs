@@ -1,4 +1,4 @@
-use std::str::FromStr;
+use std::{fmt::Display, str::FromStr};
 
 use positional::{FromPositionalRow, ToPositionalRow};
 
@@ -26,11 +26,11 @@ fn filler_is_valid_string() {
         B,
     }
 
-    impl ToString for Data {
-        fn to_string(&self) -> String {
+    impl Display for Data {
+        fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
             match self {
-                Data::A => "a".to_string(),
-                Data::B => "b".to_string(),
+                Data::A => write!(f, "a"),
+                Data::B => write!(f, "b"),
             }
         }
     }
