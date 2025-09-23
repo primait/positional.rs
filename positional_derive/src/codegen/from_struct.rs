@@ -80,6 +80,10 @@ fn generate_from_field(field: &Field, offset: usize) -> TokenStream {
         quote! {
             #field_ident: {
                 let value_str = ::positional::PositionalParsedField::new(row, #offset, #size, #filler, #align).to_value();
+                // Optimally, we'd pass some information from `_e` into the error;
+                // however, since fields only require a FromStr impl for parsing the data,
+                // the Error type is unrestricted, meaning we can't even extract an error message out of it.
+                // Hence, without further restricting the data model, this is the best we can do to report the error to the user.
                 match value_str.parse() {
                     Ok(v) => v,
                     Err(_) if value_str.is_empty() => {
