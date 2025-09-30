@@ -10,6 +10,10 @@ and this project adheres to
 
 ---
 
+## [0.4.5] - 2025-09-30
+
+---
+
 ## [0.4.4] - 2025-01-06
 
 # Changed
@@ -78,7 +82,9 @@ and this project adheres to
 [0.1.2]: https://github.com/primait/positional.rs/compare/0.1.1...0.1.2
 
 
-[Unreleased]: https://github.com/primait/positional.rs/compare/0.4.4...HEAD
+
+[Unreleased]: https://github.com/primait/positional.rs/compare/0.4.5...HEAD
+[0.4.5]: https://github.com/primait/positional.rs/compare/0.4.4...0.4.5
 [0.4.4]: https://github.com/primait/positional.rs/compare/0.4.3...0.4.4
 [0.4.3]: https://github.com/primait/positional.rs/compare/0.4.2...0.4.3
 [0.4.2]: https://github.com/primait/positional.rs/releases/tag/0.4.2
