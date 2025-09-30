@@ -70,6 +70,7 @@ fn generate_from_field(field: &Field, offset: usize) -> TokenStream {
     let size = field.attributes.size;
     let filler = field.attributes.filler;
     let align = &field.attributes.align;
+
     if field.optional {
         quote! {
             #field_ident: ::positional::PositionalParsedField::new(row, #offset, #size, #filler, #align).to_value().parse().ok()
@@ -77,15 +78,28 @@ fn generate_from_field(field: &Field, offset: usize) -> TokenStream {
     } else {
         let field_name_string = field_ident.to_string();
         quote! {
-            #field_ident: ::positional::PositionalParsedField::new(row, #offset, #size, #filler, #align).to_value().parse()
-                .map_err(|_e| ::positional::PositionalError::ParsingFailed{
-                    // Optimally, we'd pass some information from `_e` into the error;
-                    // however, since fields only require a FromStr impl for parsing the data,
-                    // the Error type is unrestricted, meaning we can't even extract an error message out of it.
-                    // Hence, without further restricting the data model, this is the best we can do to report the error to the user.
-                    field: #field_name_string.to_string(),
-                    row: row.to_string(),
-                })?
+            #field_ident: {
+                let value_str = ::positional::PositionalParsedField::new(row, #offset, #size, #filler, #align).to_value();
+                // Optimally, we'd pass some information from `_e` into the error;
+                // however, since fields only require a FromStr impl for parsing the data,
+                // the Error type is unrestricted, meaning we can't even extract an error message out of it.
+                // Hence, without further restricting the data model, this is the best we can do to report the error to the user.
+                match value_str.parse() {
+                    Ok(v) => v,
+                    Err(_) if value_str.is_empty() => {
+                        #filler.to_string().parse().map_err(|_e| ::positional::PositionalError::ParsingFailed {
+                            field: #field_name_string.to_string(),
+                            row: row.to_string(),
+                        })?
+                    }
+                    Err(_e) => {
+                        return Err(::positional::PositionalError::ParsingFailed {
+                            field: #field_name_string.to_string(),
+                            row: row.to_string(),
+                        })
+                    }
+                }
+            }
         }
     }
 }
