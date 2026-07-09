@@ -1,7 +1,4 @@
-error: failed to parse field attribute
-
-         = note: unsupported attribute
-
+error: failed to parse field attribute. unsupported attribute
  --> tests/ui/list-attributes.rs:5:13
   |
 5 |     #[field(a)]
