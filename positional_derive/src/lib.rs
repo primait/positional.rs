@@ -1,5 +1,6 @@
+use manyhow::manyhow;
 use proc_macro::TokenStream;
-use proc_macro_error2::proc_macro_error;
+use proc_macro2::TokenStream as TokenStream2;
 
 mod analyze;
 mod codegen;
@@ -13,22 +14,22 @@ use parse::{parse, Ast};
 
 /// Add to structs to make them deserializable from positional rows
 #[proc_macro_derive(FromPositionalRow, attributes(field, matcher))]
-#[proc_macro_error]
-pub fn from_positional_row(tokens: TokenStream) -> TokenStream {
-    let ast = parse(tokens.into());
-    let model = analyze(ast);
-    let ir = lower(model);
+#[manyhow]
+pub fn from_positional_row(tokens: TokenStream) -> manyhow::Result<TokenStream2> {
+    let ast = parse(tokens.into())?;
+    let model = analyze(ast)?;
+    let ir = lower(model)?;
     let rust = codegen(ir, ImplBlockType::From);
-    rust.into()
+    Ok(rust)
 }
 
 /// Add to structs to make them serializable into positional rows
 #[proc_macro_derive(ToPositionalRow, attributes(field))]
-#[proc_macro_error]
-pub fn to_positional_row(tokens: TokenStream) -> TokenStream {
-    let ast = parse(tokens.into());
-    let model = analyze(ast);
-    let ir = lower(model);
+#[manyhow]
+pub fn to_positional_row(tokens: TokenStream) -> manyhow::Result<TokenStream2> {
+    let ast = parse(tokens.into())?;
+    let model = analyze(ast)?;
+    let ir = lower(model)?;
     let rust = codegen(ir, ImplBlockType::To);
-    rust.into()
+    Ok(rust)
 }

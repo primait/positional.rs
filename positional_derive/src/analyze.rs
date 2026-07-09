@@ -1,4 +1,4 @@
-use proc_macro_error2::abort;
+use manyhow::{bail, Result};
 use syn::{Data, DataStruct, Fields};
 
 mod field;
@@ -29,13 +29,13 @@ pub struct EnumModel {
     pub variants: Vec<Variant>,
 }
 
-pub fn analyze(ast: Ast) -> Model {
+pub fn analyze(ast: Ast) -> Result<Model> {
     match ast.data {
         Data::Struct(DataStruct {
             fields: Fields::Unnamed(ref fields_unnamed),
             ..
         }) => {
-            abort!(
+            bail!(
                 fields_unnamed,
                 "only structs with named fields";
                 help = "`#[derive(ToPositionalRow)]` can only be used on structs with named fields, this is a struct with unnamed fields"
@@ -45,7 +45,7 @@ pub fn analyze(ast: Ast) -> Model {
             fields: Fields::Unit,
             ..
         }) => {
-            abort!(
+            bail!(
                 ast,
                 "only structs with named fields";
                 help = "`#[derive(ToPositionalRow)]` can only be used on structs with named fields, this is a unit struct"
@@ -54,30 +54,31 @@ pub fn analyze(ast: Ast) -> Model {
         Data::Enum(data_enum) => {
             let mut variants = vec![];
             for syn_variant in data_enum.variants {
-                match Variant::new(syn_variant.clone()) {
-                    None => abort!(syn_variant, "only enum variants with one unnamed field"),
+                match Variant::new(syn_variant.clone())? {
+                    None => bail!(syn_variant, "only enum variants with one unnamed field"),
                     Some(v) => variants.push(v),
                 }
             }
 
-            Model::Enum(EnumModel {
+            Ok(Model::Enum(EnumModel {
                 container_identity: ast.ident,
                 variants,
-            })
+            }))
         }
         Data::Struct(DataStruct {
             fields: Fields::Named(fields_named),
             ..
         }) => {
-            let fields = fields_named
-                .named
-                .into_iter()
-                .filter_map(Field::new)
-                .collect();
-            Model::Struct(StructModel {
+            let mut fields = vec![];
+            for field in fields_named.named {
+                if let Some(field) = Field::new(field)? {
+                    fields.push(field);
+                }
+            }
+            Ok(Model::Struct(StructModel {
                 container_identity: ast.ident,
                 fields,
-            })
+            }))
         }
         // this is blocked at the parsing phase
         Data::Union(_) => unreachable!(),
