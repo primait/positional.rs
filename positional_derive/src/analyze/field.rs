@@ -23,6 +23,7 @@ impl Field {
     }
 }
 
+#[allow(clippy::type_complexity)]
 fn parse_field_attributes(
     field: &syn::Field,
 ) -> Result<Option<(LitInt, Option<LitChar>, Option<LitStr>)>> {

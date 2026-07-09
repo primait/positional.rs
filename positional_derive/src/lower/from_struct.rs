@@ -1,4 +1,4 @@
-use manyhow::{Result, bail};
+use manyhow::{bail, Result};
 
 use crate::analyze::{FieldAlignment, StructModel};
 

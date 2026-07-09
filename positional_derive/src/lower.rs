@@ -3,9 +3,9 @@ pub mod from_struct;
 
 use super::analyze::Model;
 
-use manyhow::Result;
 use from_enum::{lower_enum, EnumIr};
 use from_struct::{lower_struct, StructIr};
+use manyhow::Result;
 
 pub enum Ir {
     Struct(StructIr),
