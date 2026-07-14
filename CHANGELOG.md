@@ -10,6 +10,14 @@ and this project adheres to
 
 ---
 
+## [0.4.6] - 2026-07-14
+
+# Changed
+
+- Migrate from `proc-macro-error2` to `manyhow`
+
+---
+
 ## [0.4.5] - 2025-09-30
 
 ---
@@ -84,6 +92,7 @@ and this project adheres to
 
 
 [Unreleased]: https://github.com/primait/positional.rs/compare/0.4.5...HEAD
+[0.4.6]: https://github.com/primait/positional.rs/compare/0.4.5...0.4.6
 [0.4.5]: https://github.com/primait/positional.rs/compare/0.4.4...0.4.5
 [0.4.4]: https://github.com/primait/positional.rs/compare/0.4.3...0.4.4
 [0.4.3]: https://github.com/primait/positional.rs/compare/0.4.2...0.4.3
