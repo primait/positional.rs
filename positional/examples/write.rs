@@ -24,5 +24,5 @@ pub fn main() {
     }
     let positional_file = Writer::new(rows);
     let output = positional_file.to_string();
-    println!("{}", &output);
+    println!("{}", output);
 }
