@@ -1,4 +1,4 @@
-use proc_macro_error2::abort;
+use manyhow::{bail, Result};
 use syn::{LitChar, LitInt, LitStr};
 
 const FIELD_ATTRIBUTE: &str = "field";
@@ -11,27 +11,33 @@ pub struct Field {
 }
 
 impl Field {
-    pub fn new(field: syn::Field) -> Option<Self> {
-        parse_field_attributes(&field).map(|(size, filler, align)| Self {
-            field,
-            size,
-            filler,
-            align,
-        })
+    pub fn new(field: syn::Field) -> Result<Option<Self>> {
+        Ok(
+            parse_field_attributes(&field)?.map(|(size, filler, align)| Self {
+                field,
+                size,
+                filler,
+                align,
+            }),
+        )
     }
 }
 
-fn parse_field_attributes(field: &syn::Field) -> Option<(LitInt, Option<LitChar>, Option<LitStr>)> {
+#[allow(clippy::type_complexity)]
+fn parse_field_attributes(
+    field: &syn::Field,
+) -> Result<Option<(LitInt, Option<LitChar>, Option<LitStr>)>> {
     field
         .attrs
         .iter()
         .find(|attribute| attribute.path().is_ident(FIELD_ATTRIBUTE))
         .map(parse_field_attribute_meta)
+        .transpose()
 }
 
 fn parse_field_attribute_meta(
     attribute: &syn::Attribute,
-) -> (LitInt, Option<LitChar>, Option<LitStr>) {
+) -> Result<(LitInt, Option<LitChar>, Option<LitStr>)> {
     let mut size: Option<LitInt> = None;
     let mut align: Option<LitStr> = None;
     let mut filler: Option<LitChar> = None;
@@ -50,12 +56,12 @@ fn parse_field_attribute_meta(
     });
 
     if let Err(err) = parse_result {
-        abort!(err.span(), "failed to parse field attribute"; note = err.to_string());
+        bail!(err.span(), "failed to parse field attribute. {err}");
     }
 
     match size {
-        Some(size) => (size, filler, align),
-        None => abort!(
+        Some(size) => Ok((size, filler, align)),
+        None => bail!(
             attribute,
             "wrong field configuration";
             help = "you need to provide at least a size configuration to the field"

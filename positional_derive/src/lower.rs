@@ -5,6 +5,7 @@ use super::analyze::Model;
 
 use from_enum::{lower_enum, EnumIr};
 use from_struct::{lower_struct, StructIr};
+use manyhow::Result;
 
 pub enum Ir {
     Struct(StructIr),
@@ -16,10 +17,10 @@ pub enum ImplBlockType {
     To,
 }
 
-pub fn lower(model: Model) -> Ir {
+pub fn lower(model: Model) -> Result<Ir> {
     match model {
-        Model::Struct(struct_model) => Ir::Struct(lower_struct(struct_model)),
-        Model::Enum(enum_model) => Ir::Enum(lower_enum(enum_model)),
+        Model::Struct(struct_model) => Ok(Ir::Struct(lower_struct(struct_model)?)),
+        Model::Enum(enum_model) => Ok(Ir::Enum(lower_enum(enum_model))),
     }
 }
 

@@ -9,7 +9,8 @@ fn can_extract_structs() {
             #[field(size = 20)]
             name: String,
         }
-    ));
+    ))
+    .expect("Should be Ok");
     assert!(matches!(model, Model::Struct(_)));
 }
 
@@ -21,6 +22,7 @@ fn can_extract_enums() {
             #[matcher(&row_string[0..=3] == "0000")]
             Row1(RowData1),
         }
-    ));
+    ))
+    .expect("Should be Ok");
     assert!(matches!(model, Model::Enum(_)));
 }

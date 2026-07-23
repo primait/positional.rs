@@ -1,38 +1,31 @@
+use manyhow::{bail, Result};
 use proc_macro2::TokenStream;
-use proc_macro_error2::abort;
 use syn::{Data, DeriveInput};
 
 pub type Ast = DeriveInput;
 
-pub fn parse(tokens: TokenStream) -> Ast {
-    match syn::parse2::<DeriveInput>(tokens) {
+pub fn parse(tokens: TokenStream) -> Result<Ast> {
+    match syn::parse2::<DeriveInput>(tokens)? {
         // the derivation is applied to a struct
-        Ok(
-            item @ DeriveInput {
-                data: Data::Struct(_),
-                ..
-            },
-        ) => item,
+        item @ DeriveInput {
+            data: Data::Struct(_),
+            ..
+        } => Ok(item),
         // the derivation is applied to an enum
-        Ok(
-            item @ DeriveInput {
-                data: Data::Enum(_),
-                ..
-            },
-        ) => item,
+        item @ DeriveInput {
+            data: Data::Enum(_),
+            ..
+        } => Ok(item),
         // the derivation is applied to a union
-        Ok(
-            item @ DeriveInput {
-                data: Data::Union(_),
-                ..
-            },
-        ) => {
-            abort!(
+        item @ DeriveInput {
+            data: Data::Union(_),
+            ..
+        } => {
+            bail!(
                 item,
                 "item is not a struct or an enum";
                 help = "derives can only be used on structs or enums"
             )
         }
-        Err(_) => unreachable!(),
     }
 }

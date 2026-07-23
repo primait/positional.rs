@@ -1,7 +1,4 @@
-error: failed to parse field attribute
-
-         = note: expected character literal
-
+error: failed to parse field attribute. expected character literal
  --> tests/ui/wrong-filler-type.rs:5:33
   |
 5 |     #[field(size = 10, filler = "a")]
