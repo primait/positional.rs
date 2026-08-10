@@ -10,7 +10,7 @@ documentation = "https://docs.rs/positional"
 proc-macro = true
 
 [dependencies]
-manyhow = "0.11.4"
+manyhow = "0.13.0"
 proc-macro2 = "1.0.39"
 quote = "1.0"
 syn = {version = "2.0.63", features = ["extra-traits", "full"]}
