@@ -3,7 +3,7 @@ kind: Component
 spec:
   type: library
   lifecycle: production
-  owner: team-developer-experience
+  owner: team-policy-operations-spain
   system: prima.it
 metadata:
   name: positional.rs
