@@ -10,6 +10,27 @@ and this project adheres to
 
 ---
 
+## [0.5.0] - 2026-10-20
+
+### Changed
+
+- **Breaking:** field sizes are counted in chars when writing a row, as they already were when
+  parsing it. Padding used the display width of the value and truncation its UTF-8 length, so
+  values with wide chars (e.g. CJK, emoji) or zero-width chars (e.g. combining accents) produced
+  rows of the wrong length. Rows whose chars all have a display width of 1, such as ASCII or
+  accented Latin letters, are unchanged.
+
+### Fixed
+
+- Writing a value longer than its field no longer panics when the cut falls inside a multi-byte
+  char.
+
+### Removed
+
+- `pad` dependency
+
+---
+
 ## [0.4.6] - 2026-07-14
 
 # Changed
