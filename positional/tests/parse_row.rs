@@ -58,3 +58,13 @@ fn unicode_chars() {
         .expect("error converting from positional row");
     assert_eq!(Data::new("Noël", 10, "the address is this"), row);
 }
+
+#[test]
+fn unicode_chars_ser_de() {
+    let data = Data::new("李😀", 10, "Ñandú e\u{301}\u{200B}");
+    let row = data.to_positional_row();
+    assert_eq!(30, row.chars().count());
+    let original_data: Data =
+        FromPositionalRow::from_positional_row(&row).expect("error converting from positional row");
+    assert_eq!(original_data, data);
+}

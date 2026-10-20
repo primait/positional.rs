@@ -64,7 +64,7 @@
 //!
 //! | attribute name | mandatory | type   | default      | description                                                      |
 //! |----------------|-----------|--------|--------------|------------------------------------------------------------------|
-//! | size           | yes       | number | ---          | define the size of the field in the positional row               |
+//! | size           | yes       | number | ---          | define the size of the field in the positional row, in chars     |
 //! | filler         | no        | char   | `whitespace` | define what represent the empty space in the field               |
 //! | align          | no        | string | `"left"`     | define the alignment of the field. It could be *left* or *right* |
 //!
