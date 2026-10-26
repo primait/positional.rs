@@ -39,3 +39,8 @@ env = { "RUSTDOCFLAGS" = "-Dwarnings" }
 description = "Task to release the package to crates.io"
 command = "cargo"
 args = ["release", "publish", "--no-confirm", "--allow-branch", "*", "--all-features", "--workspace", "--execute"]
+
+[tasks.deny-check]
+description = "Runs the cargo deny plugin during CI."
+command = "cargo"
+args = ["deny", "check"]
