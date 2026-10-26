@@ -28,11 +28,20 @@ jobs:
       - uses: taiki-e/install-action@ae532dedd825648efd18d9c49c9a443d0398ca0a # ratchet:taiki-e/install-action@cargo-make
       - run: cargo make test
 
+  deny:
+    # Avoid duplicate jobs on PR from a branch on the same repo
+    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: EmbarkStudios/cargo-deny-action@v2
+
   alls-green:
     if: always() && (github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name)
     runs-on: ubuntu-latest
     needs:
       - lint
       - test
+      - deny
     steps:
       - run: ${{ !contains(needs.*.result, 'failure') }}
